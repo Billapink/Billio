@@ -5,32 +5,40 @@ import sqlite3
 app = Flask(__name__)
 CORS(app)
 
-# Database setup
 def init_db():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
-    cursor.execute('CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY, description TEXT)')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS tasks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            description TEXT NOT NULL
+        )
+    ''')
     conn.commit()
     conn.close()
 
-@app.route('/tasks', methods=['GET'])
+#Route for GET request for task
+@app.route('/api/tasks', methods=['GET'])
 def get_tasks():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM tasks')
     tasks = [{'id': row[0], 'description': row[1]} for row in cursor.fetchall()]
-    conn.close()
     return jsonify(tasks)
 
-@app.route('/tasks', methods=['POST'])
+#Route for POST request for task
+@app.route('/api/tasks', methods=['POST'])
 def add_task():
-    data = request.json
+    data = request.json  
+    description = data.get('description')
+
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO tasks (description) VALUES (?)', (data['description'],))
+    cursor.execute('INSERT INTO tasks (description) VALUES (?)', (description,))
     conn.commit()
     conn.close()
-    return jsonify({'message': 'Task added successfully!'})
+    
+    return jsonify({'message': 'Task added successfully!'}), 201
 
 if __name__ == '__main__':
     init_db()
