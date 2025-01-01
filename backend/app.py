@@ -51,8 +51,8 @@ def add_task():
 # Event when a client connects
 @socketio.on('connect')
 def handle_connect():
-    print("A client connected.")
-    emit('connection_response', {'message': 'Welcome to the chat!'})  # Send a welcome message to the client
+    print(f"User: {request.sid} connected.")
+    emit('connection_response', {'message': f'Welcome to the chat {request.sid}!'})  # Send a welcome message to the client
 
 # Event when a message is received from the client
 @socketio.on('send_message')
