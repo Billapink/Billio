@@ -1,12 +1,8 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-import sqlite3
+import psycopg2
 from flask_socketio import SocketIO, emit
-import logging
 
-# Suppress logs
-log = logging.getLogger('werkzeug')
-log.setLevel(logging.ERROR)
 
 app = Flask(__name__)
 CORS(app)
@@ -14,28 +10,36 @@ socketio = SocketIO(app, cors_allowed_origins="*", logger=False, engineio_logger
 
 #------  INITIALISING DATABASE TABLES -------------------------------------------
 
-def init_db():
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS tasks (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            description TEXT NOT NULL
-        )
-    ''')
-    conn.commit()
-    conn.close()
+def get_db_connection():
+    conn = psycopg2.connect(
+        dbname="your_db_name",
+        user="your_user",
+        password="your_password",
+        host="your_host",  # e.g., 'localhost' or the Heroku database host
+        port="your_port"   # e.g., '5432' for default PostgreSQL
+    )
+    return conn
 
 #------  MANAGING DATABASE QUERIES -------------------------------------------
 
 #Route for GET request for task
 @app.route('/api/tasks', methods=['GET'])
 def get_tasks():
-    conn = sqlite3.connect('database.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM tasks')
-    tasks = [{'id': row[0], 'description': row[1]} for row in cursor.fetchall()]
-    return jsonify(tasks)
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        # Query the database
+        cursor.execute('SELECT * FROM tasks')
+        # Fetch all rows and convert to a list of dictionaries
+        tasks = [{'id': row[0], 'description': row[1]} for row in cursor.fetchall()]
+        # Close the connection
+        cursor.close()
+        conn.close()
+        # Return tasks as JSON
+        return jsonify(tasks)
+    except Exception as e:
+        # Handle exceptions
+        return jsonify({"error": str(e)}), 500
 
 #Route for POST request for task
 @app.route('/api/tasks', methods=['POST'])
