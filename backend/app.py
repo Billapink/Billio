@@ -74,6 +74,6 @@ def handle_disconnect():
     print(f"User disconnected: {request.sid}")
 
 if __name__ == '__main__':
-    init_db()
+    get_db_connection()
     app.run(debug=True)
     socketio.run(app, debug=True)
