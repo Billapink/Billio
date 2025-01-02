@@ -2,10 +2,15 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import sqlite3
 from flask_socketio import SocketIO, emit
+import logging
+
+# Suppress logs
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 app = Flask(__name__)
 CORS(app)
-socketio = SocketIO(app, cors_allowed_origins="*")  # Enable CORS for cross-origin requests
+socketio = SocketIO(app, cors_allowed_origins="*", logger=False, engineio_logger=False)  # Enable CORS for cross-origin requests
 
 #------  INITIALISING DATABASE TABLES -------------------------------------------
 
@@ -59,6 +64,10 @@ def handle_connect():
 def handle_send_message(data):
     print(f"Message received: {data}")
     emit('receive_message', data, broadcast=True)  # Broadcast the message to all connected clients
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    print(f"User disconnected: {request.sid}")
 
 if __name__ == '__main__':
     init_db()
