@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 
 // Connect to the Flask-SocketIO server
-const socket = io('http://127.0.0.1:5000');
+const socket = io('http://127.0.0.1:5000', {
+    transports: ['websocket'],
+  });
 
 function Chat() {
     const [messages, setMessages] = useState([]); // List of messages
