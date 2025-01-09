@@ -6,7 +6,7 @@ import os
 
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["https://your-frontend.vercel.app"])
 socketio = SocketIO(app, cors_allowed_origins="*", logger=False, engineio_logger=False)  # Enable CORS for cross-origin requests
 
 #------  CONNECTING TO THE DATABASE -------------------------------------------
