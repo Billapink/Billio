@@ -29,19 +29,14 @@ def get_db_connection():
 @app.route('/api/add_task', methods=['POST'])
 def add_task():
     data = request.get_json()
+    if not data or 'description' not in data:
+            return jsonify({"error": "Invalid or missing data"}), 400
+
     description = data.get('description')
 
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-
-        # Create table if it doesn't exist
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS tasks (
-                id SERIAL PRIMARY KEY,
-                description TEXT NOT NULL
-            )
-        ''')
 
         # Insert task into table
         cursor.execute('INSERT INTO tasks (description) VALUES (%s)', (description,))
