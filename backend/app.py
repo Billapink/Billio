@@ -7,8 +7,8 @@ import os
 
 app = Flask(__name__)
 CORS(app, origins=["https://your-frontend.vercel.app"])
-socketio = SocketIO(app, cors_allowed_origins="*", logger=False, engineio_logger=False)  # Enable CORS for cross-origin requests
-
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", "default-secret-key")
+socketio = SocketIO(app, cors_allowed_origins="*")
 #------  CONNECTING TO THE DATABASE -------------------------------------------
 
 def get_db_connection():
@@ -88,4 +88,5 @@ def handle_disconnect():
 if __name__ == '__main__':
     get_db_connection()
     app.run(debug=True)
-    socketio.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    port = int(os.environ.get("PORT", 5000))
+    socketio.run(app, host="0.0.0.0", port=port, debug=True)
