@@ -5,7 +5,7 @@ function TaskList() {
     const [tasks, setTasks] = useState([]);
 
     const fetchTasks = () =>  {
-            fetch('https://billio-backend.herokuapp.com/api/tasks')
+            fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/tasks')
                 .then((response) => {
                     console.log('Response status:', response.status);
                     console.log('Response body:', response);

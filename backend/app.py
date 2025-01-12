@@ -13,7 +13,7 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 
 def get_db_connection():
     # Use the DATABASE_URL directly
-    db_url = os.getenv("DATABASE_URL", "postgres://u9p9f08j6sqs9q:p93b2296938500e4f348f64325de454ff7f88376bdd685e0c2fc4412c0e3e35ea@cfls9h51f4i86c.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d29ful820lnia0")
+    db_url = os.getenv("DATABASE_URL", "postgres://u7fknjpb0a89q7:pcf1ddf627519015bea51df1410d2e8e55dda78118a04a90c5feedb0f0ebd96f7@ce0lkuo944ch99.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d5nrok0ifieaq7")
     
     try:
         # Connect using the full DATABASE_URL
@@ -24,6 +24,9 @@ def get_db_connection():
         raise
 
 #------  MANAGING DATABASE QUERIES -------------------------------------------
+@app.route("/")
+def home():
+    return "Hello, Flask app is running!"
 
 #Route for POST request for task
 @app.route('/api/add_task', methods=['POST'])
@@ -70,6 +73,7 @@ def get_tasks():
 #------  MANAGING MESSAGE BROADCASTING -------------------------------------------
 
 # Event when a client connects
+
 @socketio.on('connect')
 def handle_connect():
     print(f"User: {request.sid} connected.")
@@ -87,4 +91,5 @@ def handle_disconnect():
 
 if __name__ == '__main__':
     get_db_connection()
+    app.run(debug=True)
     socketio.run(app)

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 
 // Connect to the Flask-SocketIO server
-const socket = io('https://billio-backend.herokuapp.com', {
+const socket = io('https://billio-backend-376ef0cff770.herokuapp.com', {
     transports: ['websocket'],
   });
 

@@ -6,7 +6,7 @@ function TaskForm({onTaskAdded}) {
 
     const handleSubmit = (e) => {
         e.preventDefault(); // Prevent page reload
-        fetch('https://billio-backend.herokuapp.com/api/add_task', {
+        fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/add_task', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ description }),
