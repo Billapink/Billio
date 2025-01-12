@@ -6,7 +6,7 @@ import os
 
 
 app = Flask(__name__)
-CORS(app, origins=["https://your-frontend.vercel.app"])
+CORS(app, origins=["https://billio.co.uk"])
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", "default-secret-key")
 socketio = SocketIO(app, cors_allowed_origins="*")
 #------  CONNECTING TO THE DATABASE -------------------------------------------
