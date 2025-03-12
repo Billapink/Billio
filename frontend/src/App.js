@@ -18,7 +18,7 @@ function App() {
           <Route path="/tasklist" element={<TaskList />} />
           <Route path="/chat" element={<Chat />} />
       </Routes>
-  </div>
+  </div> 
   );
 }
 
