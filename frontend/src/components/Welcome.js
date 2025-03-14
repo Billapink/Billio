@@ -24,7 +24,7 @@ function Welcome() {
 
 
     return (
-        <div className="p-6 max-w-md mx-auto bg-pink rounded-xl shadow-md space-y-4">
+        <div className="p-6 max-w-md mx-auto bg-pink-200 rounded-xl shadow-md space-y-4">
             <h2 className="text-2xl font-bold text-gray-800 text-centre">Welcome</h2>
             <ul className="list-disc pl-5 space-y-2">
                 {tasks.map((task) => (
