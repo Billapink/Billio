@@ -2,6 +2,11 @@ import './App.css';
 import TaskList from './components/TaskList.js';
 import { Routes, Route, Link } from 'react-router-dom';
 import Chat from './components/Chat.js'
+import Welcome from "./components/Welcome";
+import SignUp from "./components/SignUp";
+import Login from "./components/Login";
+import Home from "./components/Home";
+
 
 function App() {
   return (
