@@ -11,9 +11,7 @@ import Home from "./components/Home";
 function App() {
   return (
     <div className="bg-white text-white min-h-screen items-center justify-center">
-      <div className="max-w-md mx-auto justify-centre">
-      <h1 className="p-6 text-4xl text-purple-500 font-bold">Billio</h1>
-      </div>
+      <h1 className="p-6 max-w-md mx-auto text-4xl text-purple-500 font-bold justify-centre">Billio</h1>
       <nav>
       <Link to="/welcome">Welcome</Link> | <Link to="/home">Home</Link> | <Link to="/signup">Sign Up</Link> | <Link to="/login">Log In</Link> | <Link to="/tasklist">Task List</Link> | <Link to="/chat">Chat</Link> 
       </nav>
