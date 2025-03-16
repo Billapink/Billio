@@ -11,8 +11,9 @@ import Home from "./components/Home";
 function App() {
   return (
     <div className="bg-gray-800 text-white min-h-screen items-center justify-center">
-      <div className="flex" ></div>
+      <div className="flex" >
       <h1 className="p-6 max-w-md mx-auto justify-centre text-4xl font-bold ">Billio</h1>
+      </div>
       <nav>
       <Link to="/welcome">Welcome</Link> | <Link to="/home">Home</Link> | <Link to="/signup">Sign Up</Link> | <Link to="/login">Log In</Link> | <Link to="/tasklist">Task List</Link> | <Link to="/chat">Chat</Link> 
       </nav>
