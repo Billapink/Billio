@@ -11,7 +11,7 @@ import Home from "./components/Home";
 function App() {
   return (
     <div className="bg-white text-white min-h-screen items-center justify-center">
-      <div className="max-w-md mx-auto flex">
+      <div className="max-w-md mx-auto justify-centre">
       <h1 className="p-6  text-4xl text-purple-500 font-bold justify-centre">Billio</h1>
       </div>
       <nav>
