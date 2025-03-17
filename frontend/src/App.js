@@ -14,8 +14,8 @@ function App() {
       <div className="max-w-md mx-auto justify-centre">
       <h1 className="p-6  text-4xl text-purple-500 font-bold justify-centre">Billio</h1>
       </div>
-      <nav>
-      <Link  className="text-black" to="/welcome">Welcome</Link> | <Link to="/home">Home</Link> | <Link to="/signup">Sign Up</Link> | <Link to="/login">Log In</Link> | <Link to="/tasklist">Task List</Link> | <Link to="/chat">Chat</Link> 
+      <nav className="text-black">
+      <Link   to="/welcome">Welcome</Link> | <Link to="/home">Home</Link> | <Link to="/signup">Sign Up</Link> | <Link to="/login">Log In</Link> | <Link to="/tasklist">Task List</Link> | <Link to="/chat">Chat</Link> 
       </nav>
       <Routes>
           <Route path="/welcome" element={<Welcome />} />
