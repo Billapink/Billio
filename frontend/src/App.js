@@ -10,13 +10,9 @@ import Home from "./components/Home";
 
 function App() {
   return (
-    <div className="bg-white text-white min-h-screen items-center justify-center">
-      <div className="max-w-md mx-auto justify-centre">
-      <h1 className="p-6  text-4xl text-purple-500 font-bold justify-centre">Billio</h1>
-      </div>
-      <nav>
-      <Link   to="/welcome">Welcome</Link> | <Link className="text-black" to="/home">Home</Link> | <Link className="text-black" to="/signup">Sign Up</Link> | <Link className="text-black" to="/login">Log In</Link> | <Link className="text-black" to="/tasklist">Task List</Link> | <Link className="text-black" to="/chat">Chat</Link> 
-      </nav>
+    <div className="bg-white text-white min-h-screen items-center">
+      <h1 className="p-6 text-4xl text-purple-500 font-bold ">Billio</h1>
+      
       <Routes>
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/signup" element={<SignUp />} />

@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import TaskForm from './TaskForm';
+import {useNavigate} from 'react-router-dom';
 
 function Welcome() {
     const [tasks, setTasks] = useState([]);
+
+    const navigate = useNavigate();
+
+    const handleNavigation = (path) => {
+        navigate(path);
+    };
+
 
     const fetchTasks = () =>  {
             fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/tasks')
@@ -18,6 +26,7 @@ function Welcome() {
                 .catch((error) => console.error('Error fetching tasks:', error));
         };
     
+
     useEffect(() => {
             fetchTasks();
     }, []);
@@ -25,49 +34,13 @@ function Welcome() {
 
     return (
         <div className="min-h-screen flex flex-col justify-between items-center bg-white">
-          {/* Top Logo */}
-          <div className="w-full flex justify-start p-4">
-            <img src="../assets/logos/billio-header.png" alt="Billio Logo" className="h-10" />
-          </div>
-    
-          {/* Main Content */}
-          <div className="flex flex-col items-center space-y-6">
-            {/* Central Logo */}
-            <div className="bg-yellow-400 rounded-full p-6">
-              <img src="../assets/logos/billio-small.png" alt="Billio Logo" className="h-16" />
+            <div className="mx-auto flex justify-centre pt-40 pb-50 ">
+                <div className="grid gap-8">
+                <button className="p-3 px-20 bg-purple-500 text-white font-semibold rounded-full" type="button" onClick={()=> handleNavigation('/login')} >Log In</button>
+                <button className="p-3 px-20 bg-purple-500 text-white font-semibold rounded-full" type="button" onClick={()=> handleNavigation('/signup')} >Sign Up</button>
+                </div>
             </div>
-    
-            {/* Tagline */}
-            <p className="text-purple-500 text-lg font-semibold text-center">
-              Game, Socialise and Learn
-            </p>
-    
-            {/* Buttons */}
-            <div className="flex flex-col space-y-4 w-64">
-              <button className="bg-purple-500 text-white rounded-full py-3 text-lg font-medium">
-                Login
-              </button>
-              <button className="bg-purple-500 text-white rounded-full py-3 text-lg font-medium">
-                Sign-up
-              </button>
-            </div>
-          </div>
-    
-          {/* Bottom Navigation */}
-          <div className="w-full flex justify-around p-4 bg-white">
-            <button className="text-purple-500">
-              <i className="fas fa-home text-2xl"></i>
-            </button>
-            <button className="text-purple-500">
-              <i className="fas fa-comments text-2xl"></i>
-            </button>
-            <button className="text-purple-500">
-              <i className="fas fa-trophy text-2xl"></i>
-            </button>
-            <button className="text-purple-500">
-              <i className="fas fa-user text-2xl"></i>
-            </button>
-          </div>
+            
         </div>
       );
     }

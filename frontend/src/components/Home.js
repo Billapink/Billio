@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import TaskForm from './TaskForm';
+import NavBar from './NavBar';
+
 
 function Home() {
     const [tasks, setTasks] = useState([]);
@@ -38,6 +41,7 @@ function Home() {
                 
             </ul>
             <TaskForm onTaskAdded={fetchTasks}/>
+            <NavBar/>
         </div>
     );
 }
