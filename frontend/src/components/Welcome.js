@@ -12,7 +12,6 @@ function Welcome() {
         navigate(path);
     };
 
-
     const fetchTasks = () =>  {
             fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/tasks')
                 .then((response) => {

@@ -1,43 +1,74 @@
 import React, { useEffect, useState } from 'react';
 import TaskForm from './TaskForm';
+import {useNavigate} from 'react-router-dom';
 
 function SignUp() {
-    const [tasks, setTasks] = useState([]);
-
-    const fetchTasks = () =>  {
-            fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/tasks')
-                .then((response) => {
-                    console.log('Response status:', response.status);
-                    console.log('Response body:', response);
-                    return response.json();
-                })
-                .then((data) => {
-                    console.log('Fetched tasks:', data);
-                    setTasks(data);
-                })
-                .catch((error) => console.error('Error fetching tasks:', error));
-        };
+    const [message, setMessage] = useState('');
     
-    useEffect(() => {
-            fetchTasks();
-    }, []);
+    const [newUsername,setNewUsername] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+
+    const navigate = useNavigate();
+    
+    const handleNavigation = (path) => {
+        navigate(path);
+    };
+
+
+    {/* Creating the function to sign up by using the API QUERY 'api/sign_up' which will handle the logic
+         of handling with the database then return appropriate responses given the conditions met. */}
+    
+    const sign_up = () => {
+        fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/sign_up', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({newUsername, newPassword}),
+        })
+            .then((response) => {
+                console.log('Response Status: ',response.status);
+                console.log('Response Body: ', response);
+                return response.json();
+            })
+
+            .then((data) => {
+                if (data.status == 'error'){
+                    if (data.error_type == 'already user'){
+                        setMessage(data.message);
+                        handleNavigation('/login');
+                    }
+                    if (data.error_type == 'username taken'){
+                        setMessage(data.message);
+                    }
+                } else {
+                    setMessage(data.message);
+                    handleNavigation('/home');
+                }
+
+            })
+    }
+    
+    
 
 
     return (
         <div className="p-6 max-w-md mx-auto bg-pink rounded-xl shadow-md space-y-4">
             <h2 className="text-2xl font-bold text-gray-800 text-centre">Sign Up</h2>
-            <ul className="list-disc pl-5 space-y-2">
-                {tasks.map((task) => (
-                    <li
-                        key={task.id}
-                        className="text-gray-700 hover:text-blue-500 transition-all duration-200"
-                    >
-                        {task.description}
-                    </li>
-                ))}
-                
-            </ul>
-            <TaskForm onTaskAdded={fetchTasks}/>
+            <form onSubmit={sign_up} >
+                <input
+                value={newUsername}
+                onChange={(e)=> setNewUsername(e.target.value)}
+                />
+                <input
+                value={newPassword}
+                onChange={(e)=> setNewPassword(e.target.value)}
+                />
+                <button 
+                type='submit'
+                className='text-white bg-red rounded-lg pd-3'>Sign Up</button>
+            </form>
+            <div>
+                <p className='pd-3 text-black bg-white' >{message}</p>
+            </div>
         </div>
     );
 }

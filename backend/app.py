@@ -58,7 +58,7 @@ def get_tasks():
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
-        # Query the database
+        
         cursor.execute('SELECT * FROM tasks')
         # Fetch all rows and convert to a list of dictionaries
         tasks = [{'id': row[0], 'description': row[1]} for row in cursor.fetchall()]
@@ -70,6 +70,26 @@ def get_tasks():
     except Exception as e:
         # Handle exceptions
         return jsonify({"error": str(e)}), 500
+    
+@app.route('/api/sign_up', methods=['GET', 'POST'])
+def sign_up(new_username, new_password):
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute('SELECT Username, Password FROM Users')
+        userdata = [{'username': row[0], 'password': row[1]} for row in cursor.fetchall()]
+
+        for item in userdata:
+            if new_username == userdata.username and new_password == userdata.password:
+                return jsonify({'status':'error', 'error_type':'already user', 'message':'You already have an account, please log in.'})
+            elif new_username == userdata.username:
+                return jsonify({'status': 'error', 'error_type':'username taken', 'message':'This username is already taken, please choose another'})
+            else:
+                cursor.execute('INSERT INTO Users (Username, Password) VALUES (%s)', (new_username, new_password))
+                return jsonify({'status':'successful', 'message':'You have successfully created an account!'})
+    except Exception as e:
+        return jsonify ({"error": str(e)}), 500
 
 #------  MANAGING MESSAGE BROADCASTING -------------------------------------------
 
