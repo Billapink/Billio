@@ -51,7 +51,7 @@ function SignUp() {
 
 
     return (
-        <div className="p-6 max-w-md mx-auto bg-pink rounded-xl shadow-md space-y-4">
+        <div className="p-6 max-w-md mx-auto bg-pink-100 rounded-xl shadow-md space-y-4">
             <h2 className="text-2xl font-bold text-gray-800 text-centre">Sign Up</h2>
             <form onSubmit={sign_up} >
                 <input
