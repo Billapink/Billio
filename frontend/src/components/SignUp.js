@@ -51,14 +51,18 @@ function SignUp() {
 
 
     return (
-        <div className="p-6 max-w-md mx-auto bg-pink-100 rounded-xl shadow-md space-y-4">
+        <div className="p-6 max-w-md mx-auto col-auto bg-white rounded-xl shadow-md space-y-4">
             <h2 className="text-2xl font-bold text-gray-800 text-centre">Sign Up</h2>
             <form onSubmit={sign_up} >
+                <p>Enter new username: </p>
                 <input
+                className='pd-4'
                 value={newUsername}
                 onChange={(e)=> setNewUsername(e.target.value)}
                 />
+                <p>Enter new password: </p>
                 <input
+                className='pd-4'
                 value={newPassword}
                 onChange={(e)=> setNewPassword(e.target.value)}
                 />

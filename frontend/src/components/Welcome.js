@@ -5,7 +5,6 @@ import billioLogoFront from '/Users/sadaf/Desktop/GitHubProjects/Billio/Billio/f
 import NavBar from './NavBar';
 
 function Welcome() {
-    const [tasks, setTasks] = useState([]);
 
     const navigate = useNavigate();
 
