@@ -27,7 +27,7 @@ function App() {
 
   return (
     <div className="bg-white text-white min-h-screen items-center">
-      <button type="button" onClick={handleHomeClick} className="p-6" >
+      <button type="button" onClick={handleHomeClick} className="p-6 text-black font-bold" >
         Billio
       </button>
       <p className='text-black' >This is the main front page.</p>
