@@ -7,7 +7,6 @@ import SignUp from "./components/SignUp";
 import Login from "./components/Login";
 import Home from "./components/Home";
 import {useNavigate} from 'react-router-dom';
-import billioLogo from '/Users/sadaf/Desktop/GitHubProjects/Billio/Billio/frontend/src/assets/logos/billio-header.png';
 import {useState} from 'react';
 
 function App() {
@@ -29,7 +28,6 @@ function App() {
   return (
     <div className="bg-white text-white min-h-screen items-center">
       <button type="button" onClick={handleHomeClick} className="p-6" >
-        <img className="w-20 h-auto" src={billioLogo}></img>
       </button>
       
       
