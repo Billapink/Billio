@@ -5,32 +5,12 @@ import {useNavigate} from 'react-router-dom';
 import NavBar from './NavBar';
 
 function Welcome() {
-    const [tasks, setTasks]= useState('');
 
     const navigate = useNavigate();
 
     const handleNavigation = (path) => {
         navigate(path);
     };
-
-    const fetchTasks = () =>  {
-            fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/tasks')
-                .then((response) => {
-                    console.log('Response status:', response.status);
-                    console.log('Response body:', response);
-                    return response.json();
-                })
-                .then((data) => {
-                    console.log('Fetched tasks:', data);
-                    setTasks(data);
-                })
-                .catch((error) => console.error('Error fetching tasks:', error));
-        };
-    
-
-    useEffect(() => {
-            fetchTasks();
-    }, []);
 
 
     return (
@@ -42,8 +22,9 @@ function Welcome() {
                 </div>
                 <button className="p-3 px-20 bg-purple-500 text-white font-semibold rounded-full" type="button" onClick={()=> handleNavigation('/login')} >Log In</button>
                 <button className="p-3 px-20 bg-purple-500 text-white font-semibold rounded-full" type="button" onClick={()=> handleNavigation('/signup')} >Sign Up</button>
-                <NavBar/>
+                
                 </div>
+                <NavBar/>
             </div>
             
         </div>
