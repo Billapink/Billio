@@ -51,27 +51,30 @@ function SignUp() {
 
 
     return (
-        <div className="p-6 max-w-md mx-auto col-auto bg-white rounded-xl shadow-md space-y-4">
-            <h2 className="text-2xl font-bold text-gray-800 text-centre">Sign Up</h2>
-            <form onSubmit={sign_up} >
-                <p>Enter new username: </p>
+        <div className="p-6 max-w-80 mx-auto col-auto bg-white rounded-xl shadow-md space-y-4 my-20">
+            <h2 className="text-2xl font-bold text-gray-800 text-center">Sign Up</h2>
+            <form className='text-center' onSubmit={sign_up} >
+                <p className='pd-4 text-gray-600 text-left pl-12' >Create a username: </p>
                 <input
-                className='pd-4'
+                className='pd-4 text-black bg-gray-100 w-md h-10 rounded-full'
                 value={newUsername}
                 onChange={(e)=> setNewUsername(e.target.value)}
                 />
-                <p>Enter new password: </p>
+                <p className=' pt-6 text-gray-600 text-left pl-12'>Create a password: </p>
                 <input
-                className='pd-4'
+                type='password'
+                className='pd-6 text-black bg-gray-100 w-md h-10 rounded-full'
                 value={newPassword}
                 onChange={(e)=> setNewPassword(e.target.value)}
                 />
+                <div>
                 <button 
                 type='submit'
-                className='text-white bg-red rounded-lg pd-3'>Sign Up</button>
+                className='text-white mt-6 bg-purple-600 rounded-full w-2/5 h-10'>SIGN UP</button>
+                </div>
             </form>
             <div>
-                <p className='pd-3 text-black bg-white' >{message}</p>
+                <p className='pd-3 text-black bg-white' >Status:{message}</p>
             </div>
         </div>
     );
