@@ -53,23 +53,23 @@ function SignUp() {
         <div className="p-6 max-w-80 mx-auto col-auto bg-white rounded-xl shadow-md space-y-4 my-20">
             <h2 className="text-2xl font-bold text-gray-800 text-center">Sign Up</h2>
             <form className='text-center' onSubmit={sign_up} >
-                <p className='pd-4 text-gray-600 text-left pl-12' >Create a username: </p>
+                <p className=' pd-4 text-gray-600 text-left pl-12' >Create a username: </p>
                 <input
-                className='pd-4 text-black bg-gray-100 w-md h-10 rounded-full'
+                className=' px-4 text-black bg-gray-100 h-10 rounded-full'
                 value={newUsername}
                 onChange={(e)=> setNewUsername(e.target.value)}
                 />
-                <p className=' pt-6 text-gray-600 text-left pl-12'>Create a password: </p>
+                <p className=' pt-4 text-gray-600 text-left pl-12'>Create a password: </p>
                 <input
                 type='password'
-                className='pd-6 text-black bg-gray-100 w-md h-10 rounded-full'
+                className='px-4 text-black bg-gray-100 w-md h-10 rounded-full'
                 value={newPassword}
                 onChange={(e)=> setNewPassword(e.target.value)}
                 />
                 <div>
                 <button 
                 type='submit'
-                className='text-white mt-6 bg-purple-600 rounded-full w-2/5 h-10'>SIGN UP</button>
+                className='text-white mt-8 mb-6 w-[190px] bg-purple-600 rounded-full w-2/5 h-10 hover:bg-purple-900'>SIGN UP</button>
                 </div>
             </form>
             <div>
