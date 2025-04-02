@@ -31,7 +31,7 @@ function SignUp() {
             .then((data) => {
                     setMessage(data.message);    
             })
-    
+        }
     
 
 
