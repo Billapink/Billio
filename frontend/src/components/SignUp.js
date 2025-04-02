@@ -26,9 +26,7 @@ function SignUp() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({newUsername, newPassword}),
         })
-            .then((response) => {
-                response.json();
-            })
+            .then((response) => response.json())
 
             .then((data) => {
                 if (data.status === 'error'){
