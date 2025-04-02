@@ -14,7 +14,6 @@ function SignUp() {
         navigate(path);
     };
 
-
     {/* Creating the function to sign up by using the API QUERY 'api/sign_up' which will handle the logic
          of handling with the database then return appropriate responses given the conditions met. */}
     

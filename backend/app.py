@@ -83,6 +83,7 @@ def sign_up():
 
         cursor.execute('SELECT * FROM Users WHERE Username = %s', (new_username,))
         existing_user = cursor.fetchone()
+        print(existing_user)
         
         if existing_user:
             return jsonify({'status':'error', 'message':'Error! This username already in use, please choose another one. '})
