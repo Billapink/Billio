@@ -18,25 +18,24 @@ function SignUp() {
     {/* Creating the function to sign up by using the API QUERY 'api/sign_up' which will handle the logic
          of handling with the database then return appropriate responses given the conditions met. */}
     
-    const sign_up = () => {
+    const sign_up = (e) => {
+        e.preventDefault();
+
         fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/sign_up', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({newUsername, newPassword}),
         })
             .then((response) => {
-                console.log('Response Status: ',response.status);
-                console.log('Response Body: ', response);
-                return response.json();
+                response.json();
             })
 
             .then((data) => {
-                if (data.status == 'error'){
-                    if (data.error_type == 'already user'){
+                if (data.status === 'error'){
+                    if (data.error_type === 'already user'){
                         setMessage(data.message);
                         handleNavigation('/login');
-                    }
-                    if (data.error_type == 'username taken'){
+                    } else {
                         setMessage(data.message);
                     }
                 } else {
