@@ -32,13 +32,13 @@ function SignUp() {
                 if (data.status === 'error'){
                     if (data.error_type === 'already user'){
                         setMessage(data.message);
-                        handleNavigation('/login');
+                        
                     } else {
                         setMessage(data.message);
                     }
                 } else {
                     setMessage(data.message);
-                    handleNavigation('/home');
+                    
                 }
 
             })
