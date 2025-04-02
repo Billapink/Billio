@@ -81,15 +81,12 @@ def sign_up():
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        cursor.execute('SELECT Username FROM Users WHERE Username = %s', (new_username,))
-        userdata = [{'username': row[0], 'password': row[1]} for row in cursor.fetchall()]
-
-        for item in userdata:
-            if new_username == item['username'] and new_password == item['password']:
-                return jsonify({'status':'error', 'error_type':'already user', 'message':'You already have an account, please log in.'})
-            elif new_username == item['username']:
-                return jsonify({'status': 'error', 'error_type':'username taken', 'message':'This username is already taken, please choose another'})
+        cursor.execute('SELECT * FROM Users WHERE Username = %s', (new_username,))
+        existing_user = cursor.fetchone()
         
+        if existing_user:
+            return jsonify({'status':'error', 'message':'Error! This username already in use, please choose another one. '})
+
         cursor.execute('INSERT INTO Users (Username, Password) VALUES (%s,%s)', (new_username, new_password))
         return jsonify({'status':'successful', 'message':'You have successfully created an account!'})
     

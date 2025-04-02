@@ -29,20 +29,8 @@ function SignUp() {
             .then((response) => response.json())
 
             .then((data) => {
-                if (data.status === 'error'){
-                    if (data.error_type === 'already user'){
-                        setMessage(data.message);
-                        
-                    } else {
-                        setMessage(data.message);
-                    }
-                } else {
-                    setMessage(data.message);
-                    
-                }
-
+                    setMessage(data.message);    
             })
-    }
     
     
 
