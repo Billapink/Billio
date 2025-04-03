@@ -100,7 +100,7 @@ def sign_up():
         return jsonify ({"status":"error", "message": str(e)}), 500
     
 #Log in database querying and logic
-@app.route('api/log_in', methods=['GET', 'POST'])
+@app.route('/api/log_in', methods=['GET', 'POST'])
 def log_in():
     try:
         data = request.get_json()
