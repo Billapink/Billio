@@ -25,9 +25,10 @@ function Login() {
     }
 
     return (
+        <div>
+        <img className='scale-50' src='billio-front' alt='billio logo'/>
         <div className="p-6 max-w-80 mx-auto col-auto bg-white rounded-xl shadow-md space-y-4 my-20">
         <h2 className="text-2xl font-bold text-gray-800 text-center">Log In</h2>
-        <img className='scale-50' src='/images/billio-front.png' alt='Billio Logo' />
         <form className='text-center' onSubmit={log_in} >
             <p className=' pd-4 text-gray-600 text-left pl-12' >Username: </p>
             <input
@@ -51,6 +52,7 @@ function Login() {
         <div>
             <p className='pd-3 text-black bg-white' >Status: {message}</p>
         </div>
+    </div>
     </div>
     );
 }
