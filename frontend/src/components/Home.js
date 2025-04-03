@@ -27,22 +27,12 @@ function Home() {
 
 
     return (
-        <div className="p-6 max-w-md mx-auto bg-pink rounded-xl shadow-md space-y-4">
-            <h2 className="text-2xl font-bold text-gray-800 text-centre">Home</h2>
-            <ul className="list-disc pl-5 space-y-2">
-                {tasks.map((task) => (
-                    <li
-                        key={task.id}
-                        className="text-gray-700 hover:text-blue-500 transition-all duration-200"
-                    >
-                        {task.description}
-                    </li>
-                ))}
-                
-            </ul>
-            <TaskForm onTaskAdded={fetchTasks}/>
-            <NavBar/>
+        <div className='min-h-screen flex items-end '>
+        <div className="m-4 p-6 w-2/3 mx-auto rounded-xl shadow-md space-y-4">
+        <NavBar/>
         </div>
+        </div>
+        
     );
 }
 

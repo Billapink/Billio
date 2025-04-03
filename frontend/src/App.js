@@ -6,6 +6,8 @@ import Welcome from "./components/Welcome";
 import SignUp from "./components/SignUp";
 import Login from "./components/Login";
 import Home from "./components/Home";
+import Profile from "./components/Profile.js";
+import Achievements from "./components/Achievements.js";
 import {useNavigate} from 'react-router-dom';
 import {useState} from 'react';
 
@@ -20,6 +22,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/achievements" element={<Achievements />} />
           <Route path="/tasklist" element={<TaskList />} />
       </Routes>
   </div> 
