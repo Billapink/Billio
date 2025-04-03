@@ -58,7 +58,7 @@ function SignUp() {
                 </div>
             </form>
             <div>
-                <p className='pd-3 text-black bg-white' >Status:{message}</p>
+                <p className='pd-3 text-black bg-white' >{message}</p>
             </div>
         </div>
     );

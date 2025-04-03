@@ -71,7 +71,7 @@ def get_tasks():
         # Handle exceptions
         return jsonify({"error": str(e)}), 500
 
-#Route for GET/POST request for signup in Users database
+#Sign up database querying and logic
 @app.route('/api/sign_up', methods=['GET', 'POST'])
 def sign_up():
     try:
@@ -84,7 +84,6 @@ def sign_up():
 
         cursor.execute('SELECT * FROM Users WHERE Username = %s', (new_username,))
         existing_user = cursor.fetchone()
-        print(existing_user)
         
         if existing_user:
             return jsonify({'status':'error', 'message':'Error! This username already in use, please choose another one. '})
@@ -99,6 +98,34 @@ def sign_up():
     
     except Exception as e:
         return jsonify ({"status":"error", "message": str(e)}), 500
+    
+#Log in database querying and logic
+@app.route('api/log_in', methods=['GET'])
+def log_in():
+    try:
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute('SELECT * FROM Users WHERE Username = %s', (username,))
+        existing_user = cursor.fetchone()
+
+        cursor.close()
+        conn.close()
+
+        if existing_user:
+            if password == existing_user[2]:
+                return jsonify({'status':'success', 'message':'You have successfully logged in!'})
+        
+        return jsonify({'status':'error', 'message':'Incorrect username or password, please try again.'})
+    
+    except Exception as e:
+        return jsonify({'status':'error', 'message': str(e)}), 500
+
+
 
 #------  MANAGING MESSAGE BROADCASTING -------------------------------------------
 
