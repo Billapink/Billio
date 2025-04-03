@@ -70,7 +70,8 @@ def get_tasks():
     except Exception as e:
         # Handle exceptions
         return jsonify({"error": str(e)}), 500
-    
+
+#Route for GET/POST request for signup in Users database
 @app.route('/api/sign_up', methods=['GET', 'POST'])
 def sign_up():
     try:
@@ -89,6 +90,11 @@ def sign_up():
             return jsonify({'status':'error', 'message':'Error! This username already in use, please choose another one. '})
 
         cursor.execute('INSERT INTO Users (Username, Password) VALUES (%s,%s)', (new_username, new_password))
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
         return jsonify({'status':'successful', 'message':'You have successfully created an account!'})
     
     except Exception as e:
