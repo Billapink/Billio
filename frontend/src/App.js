@@ -11,17 +11,6 @@ import {useState} from 'react';
 
 function App() {
 
-  const navigate = useNavigate();
-
-  const handleHomeClick = () => {
-    if (isLoggedIn){
-      navigate('/home');
-    }
-    else {
-      navigate('/welcome');
-    };
-    
-  };
 
   return (
     <div className="bg-white text-white min-h-screen items-center">
