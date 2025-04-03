@@ -27,7 +27,9 @@ function Login() {
 
         .then((data) => {
             setMessage(data.message);
-            setTimeout(() => (handleNavigation('/home')), 1500)
+            if (data.status === 'success') {
+                setTimeout(() => (handleNavigation('/home')), 1500)
+            }
         })
     }
 
