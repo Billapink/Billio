@@ -3,7 +3,6 @@ import TaskForm from './TaskForm';
 import {useNavigate} from 'react-router-dom';
 
 function Login() { 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [message, setMessage] = useState('');
 
     const [username, setUsername] = useState('');
@@ -28,9 +27,7 @@ function Login() {
 
         .then((data) => {
             setMessage(data.message);
-            if (data.status === 'success') {
-                setIsLoggedIn(true);
-            }
+            setTimeout(() => (handleNavigation('/home')), 1500)
         })
     }
 
@@ -63,7 +60,6 @@ function Login() {
         </form>
         <div>
             <p className='pd-3 text-black bg-white' >{message}</p>
-            {isLoggedIn ? <></>:<button onClick={() => (handleNavigation('/home'))} >Next</button>}
         </div>
     </div>
     </div>
