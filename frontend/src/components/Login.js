@@ -7,19 +7,6 @@ function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const fetchTasks = () =>  {
-            fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/tasks')
-                .then((response) => {
-                    console.log('Response status:', response.status);
-                    console.log('Response body:', response);
-                    return response.json();
-                })
-                .then((data) => {
-                    console.log('Fetched tasks:', data);
-                    setTasks(data);
-                })
-                .catch((error) => console.error('Error fetching tasks:', error));
-        };
     
     const log_in = () => {
         fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/log_in', {
