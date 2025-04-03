@@ -4,9 +4,13 @@ import { Link } from 'react-router-dom';
 function NavBar(){
 
     return(
+        <div className='min-h-screen flex items-end '>
+        <div className="m-4 p-6 w-2/3 mx-auto rounded-xl shadow-md space-y-4">
         <nav className='flex justify-around'>
-        <Link className="text-black" to="/home">Home</Link> | <Link className="text-black" to="/chat">Chat</Link> | <Link className="text-black" to="/achievements">Achievements</Link> | <Link className="text-black" to="/profile">Profile</Link> 
+        <Link className="text-black" to="/home"><img className='w-[30px]' src='/images/billio-home.png' /></Link> | <Link className="text-black" to="/chat"><img className='w-[30px]' src='/images/billio-chat.png' /></Link> | <Link className="text-black" to="/achievements"><img className='w-[30px]' src='/images/billio-achievements.png' /></Link> | <Link className="text-black" to="/profile"><img className='w-[30px]' src='/images/billio-profile.png' /></Link> 
         </nav>
+        </div>
+        </div>
     );
 
 }

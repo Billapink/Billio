@@ -27,12 +27,11 @@ function Home() {
 
 
     return (
-        <div className='min-h-screen flex items-end '>
-        <div className="m-4 p-6 w-2/3 mx-auto rounded-xl shadow-md space-y-4">
+        <div>
+        <div className='fixed bottom-0 left-0 right-0'>
         <NavBar/>
         </div>
         </div>
-        
     );
 }
 
