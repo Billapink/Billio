@@ -14,9 +14,8 @@ function App() {
 
   return (
     <div className="bg-white text-white min-h-screen items-center">
-      <Welcome/>
       <Routes>
-          <Route path="/welcome" element={<Welcome />} />
+          <Route path="/" element={<Welcome />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />

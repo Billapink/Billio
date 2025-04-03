@@ -24,7 +24,7 @@ function Welcome() {
                 <button className="p-3 px-20 bg-purple-500 text-white font-semibold rounded-full" type="button" onClick={()=> handleNavigation('/signup')} >Sign Up</button>
                 
                 </div>
-                <NavBar/>
+                
             </div>
             
         </div>
