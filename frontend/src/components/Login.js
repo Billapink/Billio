@@ -8,7 +8,9 @@ function Login() {
     const [password, setPassword] = useState('');
 
     
-    const log_in = () => {
+    const log_in = (e) => {
+        e.preventDefault();
+
         fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/log_in', {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
