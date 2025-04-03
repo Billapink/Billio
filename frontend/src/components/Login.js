@@ -48,7 +48,7 @@ function Login() {
             </div>
         </form>
         <div>
-            <p className='pd-3 text-black bg-white' >{message}</p>
+            <p className='pd-3 text-black bg-white' >Status: {message}</p>
         </div>
     </div>
     );
