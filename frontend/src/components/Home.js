@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import TaskForm from './TaskForm';
 import NavBar from './NavBar';
+import Header from './Header';
 
 
 function Home() {
@@ -28,9 +29,8 @@ function Home() {
 
     return (
         <div>
-        <div className='fixed bottom-0 left-0 right-0'>
+        <Header/>
         <NavBar/>
-        </div>
         </div>
     );
 }

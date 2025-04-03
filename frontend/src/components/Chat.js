@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 import NavBar from './NavBar';
+import Header from './Header';
 
 // Connect to the Flask-SocketIO server
 const socket = io('https://billio-backend-376ef0cff770.herokuapp.com', {
@@ -38,7 +39,8 @@ function Chat() {
 
     return (
         <div className='max-h-screen'>
-            <h2>Chat</h2>
+            <Header/>
+            <h2 className='mt-20 text-black text-center font-bold'>Chat</h2>
             <div style={{ border: '1px solid gray', padding: '10px', height: '200px', overflowY: 'scroll' }}>
                 {messages.map((msg, index) => (
                     <div key={index}>
