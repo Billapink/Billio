@@ -27,6 +27,7 @@ function Login() {
     return (
         <div className="p-6 max-w-80 mx-auto col-auto bg-white rounded-xl shadow-md space-y-4 my-20">
         <h2 className="text-2xl font-bold text-gray-800 text-center">Log In</h2>
+        <img className='scale-50' src='/images/billio-front.png' alt='Billio Logo' />
         <form className='text-center' onSubmit={log_in} >
             <p className=' pd-4 text-gray-600 text-left pl-12' >Username: </p>
             <input
@@ -44,7 +45,7 @@ function Login() {
             <div>
             <button 
             type='submit'
-            className='text-white mt-8 mb-6 w-[190px] bg-purple-600 rounded-full w-2/5 h-10 hover:bg-purple-900'>SIGN UP</button>
+            className='text-white mt-8 mb-6 w-[190px] bg-purple-600 rounded-full w-2/5 h-10 hover:bg-purple-900'>LOG IN</button>
             </div>
         </form>
         <div>
