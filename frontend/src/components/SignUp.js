@@ -64,6 +64,11 @@ function SignUp() {
             <div>
                 <p className='pd-3 text-black bg-white' >{message}</p>
             </div>
+            <div className='flex place-content-left'>
+            <button className='m-2 bg-purple-600 rounded-full' onClick={() => (handleNavigation('/'))} >
+                <img className='w-[35px]' src='/images/back-arrow.png' />
+            </button>
+            </div>
         </div>
         </div>
     );
