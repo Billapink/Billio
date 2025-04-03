@@ -35,6 +35,10 @@ function SignUp() {
 
 
     return (
+        <div>
+        <div className='flex place-content-center'>
+        <img className='mt-12 w-[140px]' src='/images/billio-front.png' alt='billio logo'/>
+        </div>
         <div className="p-6 max-w-80 mx-auto col-auto bg-white rounded-xl shadow-md space-y-4 my-20">
             <h2 className="text-2xl font-bold text-gray-800 text-center">Sign Up</h2>
             <form className='text-center' onSubmit={sign_up} >
@@ -60,6 +64,7 @@ function SignUp() {
             <div>
                 <p className='pd-3 text-black bg-white' >{message}</p>
             </div>
+        </div>
         </div>
     );
 }

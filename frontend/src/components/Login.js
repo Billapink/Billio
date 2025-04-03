@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import TaskForm from './TaskForm';
+import {useNavigate} from 'react-router-dom';
 
 function Login() { 
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [message, setMessage] = useState('');
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    
+    const navigate = useNavigate();
+
+    const handleNavigation = (path) => {
+        navigate(path);
+    };
+
     const log_in = (e) => {
         e.preventDefault();
 
@@ -21,12 +28,17 @@ function Login() {
 
         .then((data) => {
             setMessage(data.message);
+            if (data.status === 'success') {
+                setIsLoggedIn(true);
+            }
         })
     }
 
     return (
         <div>
-        <img className='scale-50' src='billio-front' alt='billio logo'/>
+        <div className='flex place-content-center'>
+        <img className='mt-12 w-[140px]' src='/images/billio-front.png' alt='billio logo'/>
+        </div>
         <div className="p-6 max-w-80 mx-auto col-auto bg-white rounded-xl shadow-md space-y-4 my-20">
         <h2 className="text-2xl font-bold text-gray-800 text-center">Log In</h2>
         <form className='text-center' onSubmit={log_in} >
@@ -50,7 +62,8 @@ function Login() {
             </div>
         </form>
         <div>
-            <p className='pd-3 text-black bg-white' >Status: {message}</p>
+            <p className='pd-3 text-black bg-white' >{message}</p>
+            {isLoggedIn ? <></>:<button onClick={() => (handleNavigation('/home'))} >Next</button>}
         </div>
     </div>
     </div>
