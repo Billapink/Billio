@@ -85,8 +85,19 @@ def sign_up():
         cursor.execute('SELECT * FROM Users WHERE Username = %s', (new_username,))
         existing_user = cursor.fetchone()
         
+        num_included = False
+        for letter in new_password:
+            if letter in '0123456789':
+                num_included = True
+
         if existing_user:
             return jsonify({'status':'error', 'message':'Error! This username already in use, please choose another one. '})
+        elif len(new_password) < 7:
+            return jsonify({'status':'error', 'message':'Error! Password must be at least 7 characters.'})
+        elif num_included == False:
+            return jsonify({'status':'error', 'message':'Error! You must have at least 1 digit in your password.'})
+        
+            
 
         cursor.execute('INSERT INTO Users (Username, Password) VALUES (%s,%s)', (new_username, new_password))
         conn.commit()
