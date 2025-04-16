@@ -6,7 +6,7 @@ import os
 
 
 app = Flask(__name__)
-CORS(app, origins=["https://www.billio.co.uk"])
+CORS(app, origins=["https://www.billio.co.uk", "http://localhost:3000"])
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", "default-secret-key")
 socketio = SocketIO(app, cors_allowed_origins="*")
 

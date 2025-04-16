@@ -30,6 +30,7 @@ function Home() {
     return (
         <div>
         <Header/>
+        <div className='p-20 text-black font-bold font-size-10' >Home</div>
         <NavBar/>
         </div>
     );
