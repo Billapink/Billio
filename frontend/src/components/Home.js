@@ -30,7 +30,10 @@ function Home() {
     return (
         <div>
         <Header/>
-        <div className='p-20 text-black font-bold font-size-10' >Home</div>
+        <div className="mx-auto w-2/3" >
+        <div className='pt-[100px] mb-20 text-black font-bold text-2xl' >Home</div>
+        <div></div>
+        </div>
         <NavBar/>
         </div>
     );

@@ -8,6 +8,7 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 import Profile from "./components/Profile.js";
 import Achievements from "./components/Achievements.js";
+import Header from './components/Header.js'
 import {useNavigate} from 'react-router-dom';
 import {useState} from 'react';
 
