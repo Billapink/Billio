@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import {useLocation, useNavigate} from 'react-router-dom';
+import { UserContext } from './UserContext';
 
 const iconOptions = [
     'cat-black-smile',
@@ -9,6 +10,7 @@ const iconOptions = [
 ];
 
 function EditProfile() {
+    const userData = useContext(UserContext);
     const { state } = useLocation();
     const [message, setMessage] = useState(state.message);
 
@@ -26,7 +28,11 @@ function EditProfile() {
         fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/update_profile', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({bio, icon}),
+            body: JSON.stringify({
+                bio, 
+                icon,
+                user_id: userData.user_id
+            }),
         })
             .then((response) => response.json())
 
@@ -44,7 +50,7 @@ function EditProfile() {
         <img className='mt-12 w-[140px]' src='/images/billio-front.png' alt='billio logo'/>
         </div>
         <div className="p-6 max-w-80 mx-auto col-auto bg-white rounded-xl shadow-md space-y-4 my-20">
-            <h2 className="text-2xl font-bold text-gray-800 text-center">Edit Profile</h2>
+            <h2 className="text-2xl font-bold text-gray-800 text-center">Edit Profile {userData.username}</h2>
             <div>
                 <p className='pd-3 text-black bg-white' >{message}</p>
             </div>

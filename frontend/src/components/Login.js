@@ -25,10 +25,11 @@ function Login() {
         .then((data) => {
             setMessage(data.message);
             if (data.status === 'success') {
-                userData.userId = data.
+                userData.userId = data.user_id;
+                userData.username = data.username;
                 if (data.profile_complete == 'true'){
                     setTimeout(() => (navigate('/home')), 1000)
-            } 
+                } 
                 else {
                     setTimeout(() => (navigate('/editProfile', {
                         state: {message: 'Please add your bio and choose an icon.'

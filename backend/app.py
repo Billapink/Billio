@@ -217,13 +217,15 @@ def update_profile():
         data = request.get_json()
         bio = data.get('bio')
         icon = data.get('icon')
+        user_id = data.get('user_id')
         conn = get_db_connection()
         cursor = conn.cursor()
 
         cursor.execute('''
-            INSERT INTO Users (bio, icon)
+            UPDATE Users (bio, icon)
             VALUES (%s,%s)
-        ''', (bio, icon, ))
+            WHERE id=%s
+        ''', (bio, icon, user_id))
 
         cursor.close()
         conn.close()
