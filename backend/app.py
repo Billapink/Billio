@@ -13,11 +13,11 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 #------  CONNECTING TO THE DATABASE -------------------------------------------
 
 def get_db_connection():
-    # Use the DATABASE_URL directly
+    # Using DATABASE_URL from hosting server
     db_url = os.getenv("DATABASE_URL", "postgres://u7fknjpb0a89q7:pcf1ddf627519015bea51df1410d2e8e55dda78118a04a90c5feedb0f0ebd96f7@ce0lkuo944ch99.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d5nrok0ifieaq7")
     
     try:
-        # Connect using the full DATABASE_URL
+        # Making the connection via whole url
         conn = psycopg2.connect(db_url, sslmode="require")
         return conn
     except Exception as e:
@@ -25,51 +25,6 @@ def get_db_connection():
         raise
 
 #------  MANAGING DATABASE QUERIES -------------------------------------------
-@app.route("/")
-def home():
-    return "Hello, Flask app is running!"
-
-#Route for POST request for task
-@app.route('/api/add_task', methods=['POST'])
-def add_task():
-    data = request.get_json()
-    if not data or 'description' not in data:
-            return jsonify({"error": "Invalid or missing data"}), 400
-
-    description = data.get('description')
-
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-
-        # Insert task into table
-        cursor.execute('INSERT INTO tasks (description) VALUES (%s)', (description,))
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return jsonify({"message": "Task added successfully"}), 201
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-
-#Route for GET request for task
-@app.route('/api/tasks', methods=['GET'])
-def get_tasks():
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        
-        cursor.execute('SELECT * FROM tasks')
-        # Fetch all rows and convert to a list of dictionaries
-        tasks = [{'id': row[0], 'description': row[1]} for row in cursor.fetchall()]
-        # Close the connection
-        cursor.close()
-        conn.close()
-        # Return tasks as JSON
-        return jsonify(tasks)
-    except Exception as e:
-        # Handle exceptions
-        return jsonify({"error": str(e)}), 500
 
 #Sign up database querying and logic
 @app.route('/api/sign_up', methods=['GET', 'POST'])
@@ -136,6 +91,151 @@ def log_in():
     except Exception as e:
         return jsonify({'status':'error', 'message': str(e)}), 500
 
+
+@app.route('/api/friend_request', methods=['POST'])
+def friend_request():
+    try:
+        data = request.get_json()
+        userId = data.get('userId')
+        friendId = data.get('friendId')
+        conn = get_db_connection()
+
+        findUser(conn, userId)
+        findUser(conn, friendId)
+
+        cursor = conn.cursor()
+
+        cursor.execute('SELECT * FROM FriendRequests WHERE userId=%s AND friendId=%s', (userId, friendId, ))
+        existing_request = cursor.fetchone()
+        if existing_request:
+            return jsonify ({"status":"error", "message": "There is an existing friend request"}), 500
+
+        cursor.execute('INSERT INTO FriendRequests (userId, friendId, status) VALUES (%s, %s, %s)', (userId, friendId, 'pending'))
+        cursor.close()
+        conn.close()
+    except Exception as e:
+        return jsonify ({"status":"error", "message": str(e)}), 500
+
+@app.route('/api/respond_request', methods=['POST'])
+def respond_request():
+    try:
+        data = request.get_json()
+        userId = data.get('userId')
+        friendId = data.get('friendId')
+        response = data.get('response')
+        
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute('SELECT * FROM FriendRequests WHERE userId=%s AND friendId=%s', (userId, friendId, ))
+        existing_request = cursor.fetchone()
+        if not existing_request:
+            return jsonify ({"status":"error", "message": "No existing friend request"}), 500
+
+        if response == 'accept':
+            cursor.execute('UPDATE FriendRequests SET status=%s WHERE userId=%s AND friendId=%s', ('accepted', userId, friendId, ))
+            cursor.execute('INSERT INTO Friends (userId, friendId) VALUES (%s, %s)', (userId, friendId, ))
+            cursor.execute('INSERT INTO Friends (userId, friendId) VALUES (%s, %s)', (friendId, userId, ))
+        elif response == 'reject':
+            cursor.execute('UPDATE FriendRequests SET status=%s WHERE userId=%s AND friendId=%s', ('rejected', userId, friendId, ))
+        else:
+            return jsonify ({"status":"error", "message": "Response must be 'accept' or 'reject'"}), 500
+        
+        cursor.close()
+        conn.close()
+    except Exception as e:
+        return jsonify ({"status":"error", "message": str(e)}), 500
+
+@app.route('/api/get_friends', methods=['GET'])
+def get_friends():
+    try:
+        data = request.get_json()
+        userId = data.get('userId')
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute('''
+            SELECT u.username, f.friendId, u.icon FROM Friends as f 
+            JOIN Users as u ON f.friendId = u.id
+            WHERE f.userId=%s
+        ''', (userId, ))
+        friends = [{'name': f[0], 'id': f[1], 'icon': f[2]} for f in cursor.fetchall()]
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({'status':'success', 'data': friends})
+    except Exception as e:
+        return jsonify ({"status":"error", "message": str(e)}), 500
+
+@app.route('/api/search_users', methods=['GET'])
+def search_users():
+    try:
+        data = request.get_json()
+        query = data.get('query')
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute('''
+            SELECT id, username, similarity(username, %s) as score
+            FROM Users
+            WHERE score > 0.5
+        ''', (query, ))
+        results = [{'id': f[0], 'name': f[1], 'score': f[2]} for f in cursor.fetchall()]
+
+        sortedResults = sortSearchResultsByScore(results)
+
+        cursor.close()
+        conn.close()
+
+        return jsonify({'status':'success', 'data': sortedResults})
+    except Exception as e:
+        return jsonify ({"status":"error", "message": str(e)}), 500
+
+#------  UTILITY FUNCTIONS -------------------------------------------
+
+def sortSearchResultsByScore(results):
+    return recursiveSortSearchResultsByScore(results, 0 , len(results))
+
+def recursiveSortSearchResultsByScore(results, start, end):
+    if end - start <= 1:
+        return [results[start]]
+
+    mid = (start + end) // 2
+    left = recursiveSortSearchResultsByScore(results, start, mid)
+    right = recursiveSortSearchResultsByScore(results, mid, end)
+
+    merged = []
+    i = 0
+    j = 0
+    while i < len(left) and j < len(right):
+        if left[i].score > right[j].score:
+            merged.append(left[i])
+            i += 1
+        else:
+            merged.append(right[j])
+            j += 1
+
+    while i < len(left):
+        merged.append(left[i])
+        i += 1
+    
+    while j < len(right):
+        merged.append(right[j])
+        j += 1
+    
+    return merged
+
+def findUser(conn, userId):
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM Users WHERE id = %s', (userId,))
+    existing_user = cursor.fetchone()
+    
+    if not existing_user:
+        raise Exception('User not found')
+    
+    return existing_user
 
 
 #------  MANAGING MESSAGE BROADCASTING -------------------------------------------

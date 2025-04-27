@@ -1,24 +1,37 @@
 import psycopg2
 from app import get_db_connection
 
-def create_tasks_table():
-
-    conn= get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute(" CREATE TABLE IF NOT EXISTS tasks (id SERIAL PRIMARY KEY, description TEXT NOT NULL)")
-    conn.commit()
-    cursor.close()
-    conn.close()
-
 def create_users_table():
 
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("CREATE TABLE IF NOT EXISTS Users (id SERIAL PRIMARY KEY, Username TEXT NOT NULL, Password TEXT NOT NULL)")
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS Users (
+            id SERIAL PRIMARY KEY, 
+            Username TEXT NOT NULL, 
+            Password TEXT NOT NULL,
+            Bio TEXT NOT NULL,
+            Icon TEXT NOT NULL
+    )""")
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS FriendRequests (
+            id SERIAL PRIMARY KEY, 
+            UserId INT4 NOT NULL REFERENCES Users ON DELETE CASCADE,
+            FriendId INT4 NOT NULL REFERENCES Users ON DELETE CASCADE,
+            Status TEXT NOT NULL
+        )
+    """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS Friends (
+            id SERIAL PRIMARY KEY, 
+            UserId INT4 NOT NULL REFERENCES Users ON DELETE CASCADE,
+            FriendId INT4 NOT NULL REFERENCES Users ON DELETE CASCADE
+        )
+    """)
+    cursor.execute('CREATE EXTENSION pg_trgm')
     conn.commit()
     cursor.close()
     conn.close()
 
 if __name__ == "__main__":
-    create_tasks_table()
     create_users_table()

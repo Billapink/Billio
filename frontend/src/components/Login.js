@@ -4,12 +4,10 @@ import {useNavigate} from 'react-router-dom';
 
 function Login() { 
     const [message, setMessage] = useState('');
-
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const navigate = useNavigate();
-
     const handleNavigation = (path) => {
         navigate(path);
     };
