@@ -222,8 +222,9 @@ def update_profile():
         cursor = conn.cursor()
 
         cursor.execute('''
-            UPDATE Users (bio, icon)
-            VALUES (%s,%s)
+            UPDATE Users SET 
+            bio = %s, 
+            icon = %s
             WHERE id=%s
         ''', (bio, icon, user_id))
 

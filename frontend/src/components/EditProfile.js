@@ -31,7 +31,7 @@ function EditProfile() {
             body: JSON.stringify({
                 bio, 
                 icon,
-                user_id: userData.user_id
+                'user_id': userData.userId,
             }),
         })
             .then((response) => response.json())
