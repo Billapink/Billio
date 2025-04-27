@@ -34,9 +34,9 @@ function Home() {
             <div className='flex flex-col pt-[50px] text-black font-bold text-2xl'>Friends</div>
             {
                 friends.map((friend) => (
-                    <div> 
+                    <div className="text-black"> 
                         <img className="w-8 h-8" src={`/images/profile-icons/${friend.icon}.png`}/>
-                        {friend.username}
+                        {friend.name}
                     </div>
                 ))
             }
