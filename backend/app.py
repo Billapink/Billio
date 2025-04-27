@@ -129,6 +129,7 @@ def friend_request():
 
         #otherwise adding a row into the friendrequests table with the status 'pending'
         cursor.execute('INSERT INTO FriendRequests (userId, friendId, status) VALUES (%s, %s, %s)', (userId, friendId, 'pending'))
+        conn.commit()
         cursor.close()
         conn.close()
     except Exception as e:
@@ -159,6 +160,7 @@ def respond_request():
         else:
             return jsonify ({"status":"error", "message": "Response must be 'accept' or 'reject'"}), 500
         
+        conn.commit()
         cursor.close()
         conn.close()
     except Exception as e:
@@ -223,7 +225,7 @@ def update_profile():
 
         cursor.execute('''
             UPDATE Users SET (bio, icon)=(%s, %s) WHERE id=%s
-        ''', (bio, user_id))
+        ''', (bio, icon, user_id))
         conn.commit()
         cursor.close()
         conn.close()
