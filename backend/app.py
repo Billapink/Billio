@@ -222,15 +222,12 @@ def update_profile():
         cursor = conn.cursor()
 
         cursor.execute('''
-            UPDATE Users SET 
-            bio = %s, 
-            icon = %s
-            WHERE id=%s
+            UPDATE Users SET bio = %s WHERE id=%s
         ''', (bio, icon, user_id))
 
         cursor.close()
         conn.close()
-        return jsonify({'status':'success', 'data': 'Data saved successfully!'})
+        return jsonify({'status':'success', 'data': f'Data saved successfully for user {user_id}!'})
     
     except Exception as e:
         return jsonify ({"status":"error", "message": str(e)}), 500
