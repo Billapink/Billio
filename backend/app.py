@@ -85,9 +85,21 @@ def log_in():
         if existing_user:
             if password == existing_user[2]:
                 if existing_user[3] and existing_user[4]:
-                    return jsonify({'status':'success', 'message':'You have successfully logged in!', 'profile_complete':'true'})
+                    return jsonify({
+                        'status':'success', 
+                        'message':'You have successfully logged in!',
+                        'user_id': existing_user[0],
+                        'username': existing_user[1],
+                        'profile_complete':'true'
+                    })
                 else:
-                    return jsonify({'status':'success', 'message':'You have successfully logged in!', 'profile_complete':'false'})
+                    return jsonify({
+                        'status':'success', 
+                        'message':'You have successfully logged in!',
+                        'user_id': existing_user[0],
+                        'username': existing_user[1], 
+                        'profile_complete':'false'
+                    })
         
         return jsonify({'status':'error', 'message':'Incorrect username or password, please try again.'})
     
@@ -203,7 +215,8 @@ def search_users():
 def update_profile():
     try:
         data = request.get_json()
-        [bio, icon] = data.get('bio', 'icon')
+        bio = data.get('bio')
+        icon = data.get('icon')
         conn = get_db_connection()
         cursor = conn.cursor()
 

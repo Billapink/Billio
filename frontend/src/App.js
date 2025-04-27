@@ -12,22 +12,25 @@ import EditProfile from './components/EditProfile.js';
 import Header from './components/Header.js'
 import {useNavigate} from 'react-router-dom';
 import {useState} from 'react';
+import { UserContext } from './components/UserContext.js';
 
 function App() {
 
 
   return (
     <div className="bg-white text-white min-h-screen items-center">
-      <Routes>
-          <Route path="/" element={<Welcome />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/achievements" element={<Achievements />} />
-          <Route path="/editProfile" element={<EditProfile />} />
-      </Routes>
+      <UserContext value={{}}>
+        <Routes>
+            <Route path="/" element={<Welcome />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/achievements" element={<Achievements />} />
+            <Route path="/editProfile" element={<EditProfile />} />
+        </Routes>
+      </UserContext>
   </div> 
   );
 }

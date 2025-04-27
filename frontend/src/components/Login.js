@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import {useNavigate} from 'react-router-dom';
+import { UserContext } from './UserContext';
 
 function Login() { 
+    const userData = useContext(UserContext);
     const [message, setMessage] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -23,6 +25,7 @@ function Login() {
         .then((data) => {
             setMessage(data.message);
             if (data.status === 'success') {
+                userData.userId = data.
                 if (data.profile_complete == 'true'){
                     setTimeout(() => (navigate('/home')), 1000)
             } 
