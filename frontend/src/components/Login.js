@@ -27,6 +27,8 @@ function Login() {
             if (data.status === 'success') {
                 userData.userId = data.user_id;
                 userData.username = data.username;
+                userData.icon = data.icon;
+                userData.bio = data.bio;
                 if (data.profile_complete == 'true'){
                     setTimeout(() => (navigate('/home')), 1000)
                 } 

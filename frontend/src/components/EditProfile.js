@@ -37,8 +37,10 @@ function EditProfile() {
             .then((response) => response.json())
 
             .then((data) => {
+                userData.icon = icon;
+                userData.bio = bio;
                 setMessage(data.message);
-                setTimeout(()=>(navigate('/home')));
+                setTimeout(()=>(navigate('/home')), 1000);
             })
         }
     

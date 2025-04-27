@@ -90,6 +90,8 @@ def log_in():
                         'message':'You have successfully logged in!',
                         'user_id': existing_user[0],
                         'username': existing_user[1],
+                        'icon': existing_user[3],
+                        'bio': existing_user[4],
                         'profile_complete':'true'
                     })
                 else:
@@ -166,11 +168,11 @@ def respond_request():
     except Exception as e:
         return jsonify ({"status":"error", "message": str(e)}), 500
 
-@app.route('/api/get_friends', methods=['GET'])
+@app.route('/api/get_friends', methods=['POST'])
 def get_friends():
     try:
         data = request.get_json()
-        userId = data.get('userId')
+        userId = data.get('user_id')
 
         conn = get_db_connection()
         cursor = conn.cursor()
