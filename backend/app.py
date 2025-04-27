@@ -223,7 +223,7 @@ def update_profile():
 
         cursor.execute('''
             UPDATE Users SET bio = %s WHERE id=%s
-        ''', (bio, icon, user_id))
+        ''', (bio, user_id))
 
         cursor.close()
         conn.close()
