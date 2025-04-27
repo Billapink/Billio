@@ -199,6 +199,26 @@ def search_users():
     except Exception as e:
         return jsonify ({"status":"error", "message": str(e)}), 500
 
+@app.route('/api/update_profile', methods=['POST'])
+def update_profile():
+    try:
+        data = request.get_json()
+        [bio, icon] = data.get('bio', 'icon')
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute('''
+            INSERT INTO Users (bio, icon)
+            VALUES (%s,%s)
+        ''', (bio, icon, ))
+
+        cursor.close()
+        conn.close()
+        return jsonify({'status':'success', 'data': 'Data saved successfully!'})
+    
+    except Exception as e:
+        return jsonify ({"status":"error", "message": str(e)}), 500
+
 #------  UTILITY FUNCTIONS -------------------------------------------
 
 def sortSearchResultsByScore(results):

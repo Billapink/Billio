@@ -10,21 +10,17 @@ const iconOptions = [
 
 function EditProfile() {
     const { state } = useLocation();
-    const message = state.message;
+    const [message, setMessage] = useState(state.message);
 
     const [bio,setBio] = useState('');
     const [icon, setIcon] = useState('');
 
     const navigate = useNavigate();
-    
-    const handleNavigation = (path) => {
-        navigate(path);
-    };
 
     {/* Creating the function to sign up by using the API QUERY 'api/sign_up' which will handle the logic
          of handling with the database then return appropriate responses given the conditions met. */}
     
-    const sign_up = (e) => {
+    const update_profile = (e) => {
         e.preventDefault();
 
         fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/update_profile', {
@@ -35,7 +31,8 @@ function EditProfile() {
             .then((response) => response.json())
 
             .then((data) => {
-                navigate('/home')  
+                setMessage(data.message);
+                setTimeout(()=>(navigate('/home')));
             })
         }
     
@@ -51,27 +48,28 @@ function EditProfile() {
             <div>
                 <p className='pd-3 text-black bg-white' >{message}</p>
             </div>
-            <form className='text-center' onSubmit={sign_up} >
-                <p className=' pd-4 text-gray-600 text-left pl-12' >Add your bio: </p>
-                <textarea
-                className=' px-4 text-black bg-gray-100 rounded-xl'
-                row="10"
-                value={bio}
-                onChange={(e)=> setBio(e.target.value)}
-                />
-                <p className=' pt-4 text-gray-600 text-left pl-12'>Select your icon: </p>
+            <form className='text-center' onSubmit={update_profile} >
+            <p className=' pt-4 mb-2 text-gray-600 text-left pl-12'>Select your icon: </p>
                 <div
-                className='flex flex-row gap-4 justify-center px-4 mx-6 text-black bg-gray-100 w-md rounded-full'
+                className='flex flex-row mb-6 gap-4 justify-left py-2 px-4 mx-6 text-black bg-gray-100 w-md rounded-full '
                 >
                     {iconOptions.map((opt) => {
                         const extraClasses = opt === icon ? "border-2 border-purple-900 rounded-full " : "";
                         return (
                             <button type="button" onClick={(e)=> setIcon(opt)} className={`${extraClasses} p-2`}>
-                                <img className="w-5 h-5" src={`/images/profile-icons/${opt}.png`}/>
+                                <img className="w-8 h-8" src={`/images/profile-icons/${opt}.png`}/>
                             </button>
                         );
                     })}
                 </div>
+                <p className=' pd-4 mb-2 text-gray-600 text-left pl-12' >Add your bio: </p>
+                <textarea
+                className=' px-4 p-2 text-black bg-gray-100 rounded-xl'
+                row="10"
+                value={bio}
+                onChange={(e)=> setBio(e.target.value)}
+                />
+                
                 <div>
                 <button 
                 type='submit'
@@ -79,7 +77,7 @@ function EditProfile() {
                 </div>
             </form>
             <div className='flex place-content-left'>
-            <button className='m-2 bg-purple-600 rounded-full' onClick={() => (handleNavigation('/'))} >
+            <button className='m-2 bg-purple-600 rounded-full' onClick={() => (navigate('/'))} >
                 <img className='w-[35px]' src='/images/back-arrow.png' />
             </button>
             </div>

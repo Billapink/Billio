@@ -28,7 +28,7 @@ function Login() {
             } 
                 else {
                     setTimeout(() => (navigate('/editProfile', {
-                        state: {message: 'Please add you bio and choose an icon'
+                        state: {message: 'Please add your bio and choose an icon.'
                     }})), 1000)
                 }
             }
