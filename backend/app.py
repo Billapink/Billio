@@ -222,9 +222,9 @@ def update_profile():
         cursor = conn.cursor()
 
         cursor.execute('''
-            UPDATE Users SET bio = %s WHERE id=%s
+            UPDATE Users SET (bio, icon)=(%s, %s) WHERE id=%s
         ''', (bio, user_id))
-
+        conn.commit()
         cursor.close()
         conn.close()
         return jsonify({'status':'success', 'data': f'Data saved successfully for user {user_id}!'})
