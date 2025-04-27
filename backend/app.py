@@ -84,7 +84,10 @@ def log_in():
 
         if existing_user:
             if password == existing_user[2]:
-                return jsonify({'status':'success', 'message':'You have successfully logged in!'})
+                if existing_user[3] and existing_user[4]:
+                    return jsonify({'status':'success', 'message':'You have successfully logged in!', 'profile_complete':'true'})
+                else:
+                    return jsonify({'status':'success', 'message':'You have successfully logged in!', 'profile_complete':'false'})
         
         return jsonify({'status':'error', 'message':'Incorrect username or password, please try again.'})
     
@@ -100,16 +103,19 @@ def friend_request():
         friendId = data.get('friendId')
         conn = get_db_connection()
 
+        #checking if the user and the friend exist in the database
         findUser(conn, userId)
         findUser(conn, friendId)
 
         cursor = conn.cursor()
-
+        
+        #checking if the friend request already exists in the database
         cursor.execute('SELECT * FROM FriendRequests WHERE userId=%s AND friendId=%s', (userId, friendId, ))
         existing_request = cursor.fetchone()
         if existing_request:
             return jsonify ({"status":"error", "message": "There is an existing friend request"}), 500
 
+        #otherwise adding a row into the friendrequests table with the status 'pending'
         cursor.execute('INSERT INTO FriendRequests (userId, friendId, status) VALUES (%s, %s, %s)', (userId, friendId, 'pending'))
         cursor.close()
         conn.close()

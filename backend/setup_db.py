@@ -10,8 +10,8 @@ def create_users_table():
             id SERIAL PRIMARY KEY, 
             Username TEXT NOT NULL, 
             Password TEXT NOT NULL,
-            Bio TEXT NOT NULL,
-            Icon TEXT NOT NULL
+            Bio TEXT,
+            Icon TEXT 
     )""")
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS FriendRequests (
@@ -28,7 +28,7 @@ def create_users_table():
             FriendId INT4 NOT NULL REFERENCES Users ON DELETE CASCADE
         )
     """)
-    cursor.execute('CREATE EXTENSION pg_trgm')
+    cursor.execute('CREATE EXTENSION IF NOT EXISTS pg_trgm')
     conn.commit()
     cursor.close()
     conn.close()

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import TaskForm from './TaskForm';
+
 import {useNavigate} from 'react-router-dom';
 
 function Login() { 
@@ -8,9 +8,6 @@ function Login() {
     const [password, setPassword] = useState('');
 
     const navigate = useNavigate();
-    const handleNavigation = (path) => {
-        navigate(path);
-    };
 
     const log_in = (e) => {
         e.preventDefault();
@@ -26,7 +23,14 @@ function Login() {
         .then((data) => {
             setMessage(data.message);
             if (data.status === 'success') {
-                setTimeout(() => (handleNavigation('/home')), 1000)
+                if (data.profile_complete == 'true'){
+                    setTimeout(() => (navigate('/home')), 1000)
+            } 
+                else {
+                    setTimeout(() => (navigate('/editProfile', {
+                        state: {message: 'Please add you bio and choose an icon'
+                    }})), 1000)
+                }
             }
         })
     }
@@ -62,7 +66,7 @@ function Login() {
             <p className='pd-3 text-black bg-white' >{message}</p>
         </div>
         <div className='flex place-content-left'>
-            <button className='m-2 bg-purple-600 rounded-full' onClick={() => (handleNavigation('/'))} >
+            <button className='m-2 bg-purple-600 rounded-full' onClick={() => (navigate('/'))} >
                 <img className='w-[35px]' src='/images/back-arrow.png' />
             </button>
         </div>

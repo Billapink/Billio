@@ -1,5 +1,5 @@
 import './App.css';
-import TaskList from './components/TaskList.js';
+
 import { Routes, Route, Link } from 'react-router-dom';
 import Chat from './components/Chat.js'
 import Welcome from "./components/Welcome";
@@ -8,6 +8,7 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 import Profile from "./components/Profile.js";
 import Achievements from "./components/Achievements.js";
+import EditProfile from './components/EditProfile.js';
 import Header from './components/Header.js'
 import {useNavigate} from 'react-router-dom';
 import {useState} from 'react';
@@ -25,7 +26,7 @@ function App() {
           <Route path="/chat" element={<Chat />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/achievements" element={<Achievements />} />
-          <Route path="/tasklist" element={<TaskList />} />
+          <Route path="/editProfile" element={<EditProfile />} />
       </Routes>
   </div> 
   );

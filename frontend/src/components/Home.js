@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import TaskForm from './TaskForm';
+
 import NavBar from './NavBar';
 import Header from './Header';
 
 
 function Home() {
-    const [userData, setUserData] = useState({'username':'Billapink', 'icon':'/images/profile-icons/cat-black-smile.png', 'bio':'Sam Smith is king.'});
+    const [userData, setUserData] = useState([]);
     
-    useEffect(() => {
-            fetchTasks();
-    }, []);
+
 
     return (
         <div>
