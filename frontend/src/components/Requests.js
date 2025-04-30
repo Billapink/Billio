@@ -1,82 +1,54 @@
-import React, { useContext, useState } from 'react';
-
+import React, { useContext, useEffect, useState } from 'react';
+import NavBar from './NavBar';
+import Header from './Header';
 import {useNavigate} from 'react-router-dom';
 import { UserContext } from './UserContext';
 
 function Requests() { 
     const userData = useContext(UserContext);
-    const [message, setMessage] = useState('');
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [friendRequests, setFriendRequests] = useState([]);
 
     const navigate = useNavigate();
 
-    const log_in = (e) => {
-        e.preventDefault();
-
-        fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/log_in', {
+    useEffect(() => {
+        fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/get_friend_requests', {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({username, password})
+            body: JSON.stringify({
+                userId: userData.userId
+            })
         })
-        
         .then((response)=> response.json())
-
-        .then((data) => {
-            setMessage(data.message);
-            if (data.status === 'success') {
-                userData.userId = data.user_id;
-                userData.username = data.username;
-                userData.icon = data.icon;
-                userData.bio = data.bio;
-                if (data.profile_complete == 'true'){
-                    setTimeout(() => (navigate('/home')), 1000)
-                } 
-                else {
-                    setTimeout(() => (navigate('/editProfile', {
-                        state: {message: 'Please add your bio and choose an icon.'
-                    }})), 1000)
-                }
-            }
-        })
-    }
+        .then((data) => {setFriendRequests(data.data)})
+        },
+      []);
 
     return (
-        <div>
-        <div className='flex place-content-center'>
-        <img className='mt-12 w-[140px]' src='/images/billio-front.png' alt='billio logo'/>
+    <div>
+        <Header/>
+        <div className="mx-auto w-1/2" >
+        <div className='flex justify-center'>
+        <div className='p-7 pt-[100px] text-black font-bold text-2xl' >Friend Requests</div>
         </div>
-        <div className="p-6 max-w-80 mx-auto col-auto bg-white rounded-xl shadow-md space-y-4 my-20">
-        <h2 className="text-2xl font-bold text-gray-800 text-center">Log In</h2>
-        <form className='text-center' onSubmit={log_in} >
-            <p className=' pd-4 text-gray-600 text-left pl-12' >Username: </p>
-            <input
-            className=' px-4 text-black bg-gray-100 h-10 rounded-full'
-            value={username}
-            onChange={(e)=> setUsername(e.target.value)}
-            />
-            <p className=' pt-4 text-gray-600 text-left pl-12'>Password: </p>
-            <input
-            type='password'
-            className='px-4 text-black bg-gray-100 w-md h-10 rounded-full'
-            value={password}
-            onChange={(e)=> setPassword(e.target.value)}
-            />
-            <div>
-            <button 
-            type='submit'
-            className='text-white mt-8 mb-6 w-[190px] bg-purple-600 rounded-full w-2/5 h-10 hover:bg-purple-900'>LOG IN</button>
-            </div>
-        </form>
-        <div>
-            <p className='pd-3 text-black bg-white' >{message}</p>
+        {/* Section to map friend name and icon in notification section*/}
+        <div className='flex flex-col gap-y-3'>
+            {friendRequests.map((friend)=> (
+        <div className='flex justify-between px-3 py-1 border-[1px] rounded-xl border-radius border-gray-200 shadow-sm'>
+        <div className='flex '>
+        <img className='m-3 w-7 h-7' src={`/images/profile-icons/${friend.icon}.png`}/>
+        <div className='text-black text-md p-3'>
+            {friend.name}
         </div>
-        <div className='flex place-content-left'>
-            <button className='m-2 bg-purple-600 rounded-full' onClick={() => (navigate('/'))} >
-                <img className='w-[35px]' src='/images/back-arrow.png' />
-            </button>
         </div>
-    </div>
+        <div className='flex'>
+            <img className='m-3 w-7 h-7' src='/images/billio-cross.png'/>
+            <img className='m-2 w-8 h-8' src='/images/billio-tick.png'/>
+        </div>
+        </div>
+            ))}
+        </div>
+        </div>
+        <NavBar/>
     </div>
     );
 }

@@ -137,6 +137,33 @@ def friend_request():
     except Exception as e:
         return jsonify ({"status":"error", "message": str(e)}), 500
 
+@app.route('/api/get_friend_requests', methods=['POST'])
+def get_friend_requests():
+    try:
+        data = request.get_json()
+        userId = data.get('userId')
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute('''
+                       SELECT username, icon FROM FriendRequests 
+                       JOIN Users
+                       ON FriendRequests.userid=Users.id
+                       WHERE friendid = %s and status='pending'
+                       ''', (userId,))
+        
+        friendRequests = [{'name': friendRequest[0], 'icon': friendRequest[1]} for friendRequest in cursor.fetchall()]
+
+        cursor.close()
+        conn.close()
+
+        return jsonify ({"status":"success", "data": friendRequests})
+
+        
+    except Exception as e:
+        return jsonify ({"status":"error", "message": str(e)}), 500
+
 @app.route('/api/respond_request', methods=['POST'])
 def respond_request():
     try:
@@ -182,7 +209,7 @@ def get_friends():
             JOIN Users as u ON f.friendId = u.id
             WHERE f.userId=%s
         ''', (userId, ))
-        friends = [{'name': f[0], 'id': f[1], 'icon': f[2]} for f in cursor.fetchall()]
+        friends = [{'name': friend[0], 'id': friend[1], 'icon': friend[2]} for friend in cursor.fetchall()]
 
         cursor.close()
         conn.close()

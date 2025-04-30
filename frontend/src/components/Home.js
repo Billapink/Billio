@@ -9,6 +9,7 @@ import { UserContext } from './UserContext';
 function Home() {
     const userData = useContext(UserContext);
     const [friends, setFriends] = useState([]);
+    
     useEffect(() => {
         fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/get_friends', {
             method: 'POST',
@@ -33,15 +34,13 @@ function Home() {
         
         <div className=' pt-[100px] flex justify-between'>
                 <div className=' text-black font-bold text-2xl' >{userData.username}'s Home</div>
-                <button onClick={()=>{
-                    navigate('/Requests');
-                }}>
-                    <img className='m-3 w-7 h-7 bg-gray-100 rounded-full p-1' src='/images/billio-notification.png'/>
+                <button onClick={()=>(navigate('/Requests'))}>
+                    <img className='m-3 w-7 h-7 bg-gray-100 hover:bg-gray-200 rounded-full p-1' src='/images/billio-notification.png'/>
                 </button>
                 
         </div>
-        <div className='flex flex-col pt-[50px] text-black font-bold text-2xl'>Friends</div>
-        <div>
+        <div className='flex pt-[50px] text-black font-bold text-2xl'>Friends</div>
+        <div className='flex gap-x-3 py-3'>
             {
                 friends.map((friend) => (
                     <div className="text-black"> 
@@ -50,7 +49,7 @@ function Home() {
                     </div>
                 ))
             }
-            </div>
+        </div>
         </div>
         <NavBar/>
         </div>
