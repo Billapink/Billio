@@ -147,13 +147,13 @@ def get_friend_requests():
         cursor = conn.cursor()
 
         cursor.execute('''
-                       SELECT username, icon FROM FriendRequests 
+                       SELECT username, userid, icon FROM FriendRequests 
                        JOIN Users
                        ON FriendRequests.userid=Users.id
                        WHERE friendid = %s and status='pending'
                        ''', (userId,))
         
-        friendRequests = [{'name': friendRequest[0], 'icon': friendRequest[1]} for friendRequest in cursor.fetchall()]
+        friendRequests = [{'name': friendRequest[0], 'userid':friendRequest[1], 'icon': friendRequest[2]} for friendRequest in cursor.fetchall()]
 
         cursor.close()
         conn.close()

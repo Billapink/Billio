@@ -23,6 +23,43 @@ function Requests() {
         },
       []);
 
+      const rejectRequest = (friendId) => {
+        fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/respond_request', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({
+                userId: userData.userId,
+                friendId: friendId,
+                response: 'reject'
+
+            })
+            .then(
+                setFriendRequests(prev =>
+                    prev.filter(request => request.userid !== friendId)
+                )
+            )
+        })
+      };
+
+      const acceptRequest = (friendId) => {
+        fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/respond_request', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({
+                userId: userData.userId,
+                friendId: friendId,
+                response: 'accept'
+
+            })
+            .then(
+                setFriendRequests(prev =>
+                    prev.filter(request => request.userid !== friendId)
+                )
+            )
+        })
+      };
+
+
     return (
     <div>
         <Header/>
@@ -40,9 +77,14 @@ function Requests() {
             {friend.name}
         </div>
         </div>
+        {/* Section for buttons accepting or rejecting friend request and corresponding api call function*/}
         <div className='flex'>
+            <button onClick={()=>rejectRequest(friend.userid)}>
             <img className='m-3 w-7 h-7' src='/images/billio-cross.png'/>
+            </button>
+            <button onClick={()=>acceptRequest(friend.userid)}>
             <img className='m-2 w-8 h-8' src='/images/billio-tick.png'/>
+            </button>
         </div>
         </div>
             ))}
