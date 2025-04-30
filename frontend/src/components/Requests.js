@@ -33,11 +33,7 @@ function Requests() {
                 response: 'reject'
 
             })
-            .then(
-                setFriendRequests(prev =>
-                    prev.filter(request => request.userid !== friendId)
-                )
-            )
+            
         })
       };
 
@@ -49,13 +45,10 @@ function Requests() {
                 userId: userData.userId,
                 friendId: friendId,
                 response: 'accept'
-
+                
+        
             })
-            .then(
-                setFriendRequests(prev =>
-                    prev.filter(request => request.userid !== friendId)
-                )
-            )
+            
         })
       };
 
