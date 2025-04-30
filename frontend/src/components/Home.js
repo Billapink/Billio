@@ -9,7 +9,7 @@ import { UserContext } from './UserContext';
 function Home() {
     const userData = useContext(UserContext);
     const [friends, setFriends] = useState([]);
-    
+
     useEffect(() => {
         fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/get_friends', {
             method: 'POST',
@@ -23,6 +23,9 @@ function Home() {
             console.log('Friends', data);
             setFriends(data.data);
         });
+
+        console.log("userData:", userData);
+
     }, []);
     
     const navigate = useNavigate();
@@ -33,7 +36,10 @@ function Home() {
         <div className="mx-auto w-2/3" >
         
         <div className=' pt-[100px] flex justify-between'>
-                <div className=' text-black font-bold text-2xl' >{userData.username}'s Home</div>
+                <div className='flex' >
+                    <img className='m-3 sh-7 w-7 bg-gray-100 rounded-full' src={`/images/profile-icons/${userData.icon}.png`}/>
+                    <div className=' text-black font-bold text-2xl' >{userData.username}'s Home</div>
+                </div>
                 <button onClick={()=>(navigate('/Requests'))}>
                     <img className='m-3 w-7 h-7 bg-gray-100 hover:bg-gray-200 rounded-full p-1' src='/images/billio-notification.png'/>
                 </button>
