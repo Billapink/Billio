@@ -1,18 +1,20 @@
-import {React} from 'react';
+import React, { useContext} from 'react';
 import {useNavigate} from 'react-router-dom';
+import { UserContext } from './UserContext';
 
 
 function Header() {
 
     const navigate = useNavigate();
-
+    const userData = useContext(UserContext);
     
 
     return (
         <div>
         <div className='fixed top-0 left-0 right-0 shadow-md'>
-        <div className="relative z-50">
+        <div className="flex justify-between relative z-50">
         <img className="m-5 w-[70px]" src="/images/billio-header.png" alt="Billio logo"/>
+        <img className='mr-8 mt-2 h-[40px] w-[40px] bg-gray-100 rounded-full' src={`/images/profile-icons/${userData.icon}.png`}/>
         </div>
         </div>
         </div>

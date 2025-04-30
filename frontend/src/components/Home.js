@@ -24,8 +24,6 @@ function Home() {
             setFriends(data.data);
         });
 
-        console.log("userData:", userData);
-
     }, []);
     
     const navigate = useNavigate();
@@ -35,17 +33,17 @@ function Home() {
         <Header/>
         <div className="mx-auto w-2/3" >
         
-        <div className=' pt-[100px] flex justify-between'>
-                <div className='flex' >
-                    <img className='m-3 sh-7 w-7 bg-gray-100 rounded-full' src={`/images/profile-icons/${userData.icon}.png`}/>
-                    <div className=' text-black font-bold text-2xl' >{userData.username}'s Home</div>
-                </div>
-                <button onClick={()=>(navigate('/Requests'))}>
-                    <img className='m-3 w-7 h-7 bg-gray-100 hover:bg-gray-200 rounded-full p-1' src='/images/billio-notification.png'/>
-                </button>
+        <div className=' pt-[100px] flex justify-center'>
+                <div className=' text-black font-bold text-3xl' >Home</div>
+                
                 
         </div>
-        <div className='flex pt-[50px] text-black font-bold text-2xl'>Friends</div>
+        <div className=' pt-[50px] flex justify-between'>
+            <div className='flex  text-black font-bold text-2xl'>Friends</div>
+            <button onClick={()=>(navigate('/Requests'))}>
+                <img className='m-3 w-7 h-7 bg-gray-100 hover:bg-gray-200 rounded-full p-1' src='/images/billio-notification.png'/>
+            </button>
+        </div>
         <div className='flex gap-x-3 py-3'>
             {
                 friends.map((friend) => (

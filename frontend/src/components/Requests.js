@@ -28,7 +28,7 @@ function Requests() {
         <Header/>
         <div className="mx-auto w-1/2" >
         <div className='flex justify-center'>
-        <div className='p-7 pt-[100px] text-black font-bold text-2xl' >Friend Requests</div>
+        <div className='p-7 pt-[100px] text-black font-bold text-3xl' >Friend Requests</div>
         </div>
         {/* Section to map friend name and icon in notification section*/}
         <div className='flex flex-col gap-y-3'>
