@@ -90,8 +90,8 @@ def log_in():
                         'message':'You have successfully logged in!',
                         'user_id': existing_user[0],
                         'username': existing_user[1],
-                        'icon': existing_user[3],
-                        'bio': existing_user[4],
+                        'icon': existing_user[4],
+                        'bio': existing_user[3],
                         'profile_complete':'true'
                     })
                 else:
