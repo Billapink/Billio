@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import {useNavigate} from 'react-router-dom';
 import NavBar from './NavBar';
 import Header from './Header';
 import { UserContext } from './UserContext';
@@ -24,14 +24,24 @@ function Home() {
         });
     }, []);
     
-
+    const navigate = useNavigate();
 
     return (
         <div>
         <Header/>
         <div className="mx-auto w-2/3" >
-        <div className='pt-[100px] text-black font-bold text-2xl' >{userData.username}'s Home</div>
-            <div className='flex flex-col pt-[50px] text-black font-bold text-2xl'>Friends</div>
+        
+        <div className=' pt-[100px] flex justify-between'>
+                <div className=' text-black font-bold text-2xl' >{userData.username}'s Home</div>
+                <button onClick={()=>{
+                    navigate('/Requests');
+                }}>
+                    <img className='m-3 w-7 h-7 bg-gray-100 rounded-full p-1' src='/images/billio-notification.png'/>
+                </button>
+                
+        </div>
+        <div className='flex flex-col pt-[50px] text-black font-bold text-2xl'>Friends</div>
+        <div>
             {
                 friends.map((friend) => (
                     <div className="text-black"> 
@@ -41,6 +51,7 @@ function Home() {
                 ))
             }
             </div>
+        </div>
         <NavBar/>
         </div>
     );

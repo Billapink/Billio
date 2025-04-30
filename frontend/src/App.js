@@ -9,6 +9,7 @@ import Home from "./components/Home";
 import Profile from "./components/Profile.js";
 import Achievements from "./components/Achievements.js";
 import EditProfile from './components/EditProfile.js';
+import Requests from './components/Requests.js';
 import Header from './components/Header.js'
 import {useNavigate} from 'react-router-dom';
 import {useState} from 'react';
@@ -29,6 +30,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/achievements" element={<Achievements />} />
             <Route path="/editProfile" element={<EditProfile />} />
+            <Route path="/Requests" element={<Requests />} />
         </Routes>
       </UserContext>
   </div> 
