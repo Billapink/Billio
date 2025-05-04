@@ -192,7 +192,7 @@ def respond_request():
         conn.commit()
         cursor.close()
         conn.close()
-    except e:
+    except Exception as e:
         return jsonify ({"status":"error", "message": str(e)}), 500
 
 
