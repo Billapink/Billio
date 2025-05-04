@@ -178,7 +178,7 @@ def respond_request():
         cursor.execute('SELECT * FROM FriendRequests WHERE userId=%s AND friendId=%s', (userId, friendId, ))
         existing_request = cursor.fetchone()
         if not existing_request:
-            return jsonify ({"status":"error", "message": "No existing friend request"}), 500
+            return jsonify ({"status":"error", "message": "No existing friend request", "userId": userId, "friendId": friendId}), 500
 
         if response == 'accept':
             cursor.execute('UPDATE FriendRequests SET status=%s WHERE userId=%s AND friendId=%s', ('accepted', userId, friendId, ))
