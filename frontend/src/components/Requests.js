@@ -28,8 +28,8 @@ function Requests() {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify({
-                userId: userData.userId,
-                friendId: friendId,
+                userId: friendId,
+                friendId: userData.userId,
                 response: 'reject'
 
             })
@@ -42,8 +42,8 @@ function Requests() {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
             body: JSON.stringify({
-                userId: userData.userId,
-                friendId: friendId,
+                userId: friendId,
+                friendId: userData.userId,
                 response: 'accept'
                 
         

@@ -192,8 +192,9 @@ def respond_request():
         conn.commit()
         cursor.close()
         conn.close()
-    except Exception as e:
+    except e:
         return jsonify ({"status":"error", "message": str(e)}), 500
+
 
 @app.route('/api/get_friends', methods=['POST'])
 def get_friends():
