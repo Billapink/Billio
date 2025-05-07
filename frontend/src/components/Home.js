@@ -53,10 +53,10 @@ function Home() {
         </div>
         <div className=' pt-[100px] flex justify-center'>
             <input
-                className=' px-4 text-black bg-gray-100 h-10 rounded-full' 
+                className='px-4 text-black bg-gray-100 h-10 rounded-full' 
                 value={searchQuery} 
                 onChange={(e) => setSearchQuery(e.target.value)}/>
-            <button onClick={handleSearch}>Search</button>
+            <button className='px-4 text-black bg-gray-100 h-10 rounded-full' onClick={handleSearch}>Search</button>
         </div>
         <div className=' pt-[50px] flex justify-between'>
             <div className='flex  text-black font-bold text-2xl'>Friends</div>

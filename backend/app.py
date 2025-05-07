@@ -235,9 +235,9 @@ def search_users():
         cursor = conn.cursor()
 
         cursor.execute('''
-            SELECT id, username, icon, similarity(username, %s) as score
+            SELECT id, username, icon, similarity(username, %s)
             FROM Users
-            WHERE score > 0.5
+            WHERE similarity(username, %s) > 0.5
         ''', (query, ))
         results = [{'id': f[0], 'name': f[1], 'icon': f[2], 'score': f[3]} for f in cursor.fetchall()]
 
