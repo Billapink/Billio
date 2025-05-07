@@ -40,10 +40,12 @@ function Chat() {
     return (
         <div className='max-h-screen'>
             <Header/>
-            <h2 className='mt-20 text-black text-center font-bold'>Chat</h2>
+            <div className=' pt-[100px] flex justify-center'>
+            <h2 className='text-black font-bold text-3xl'>Chat</h2>
+            </div>
             <div style={{ border: '1px solid gray', padding: '10px', height: '200px', overflowY: 'scroll' }}>
                 {messages.map((msg, index) => (
-                    <div key={index}>
+                    <div className='text-black' key={index}>
                         <strong>{msg.sender}:</strong> {msg.content}
                     </div>
                 ))}

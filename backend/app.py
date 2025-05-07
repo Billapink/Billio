@@ -123,11 +123,18 @@ def friend_request():
 
         cursor = conn.cursor()
         
+        #checking if the friend_id is already a friend
+        cursor.execute('SELECT friendid FROM Friends WHERE userid = %s AND friend = %s', (userId, friendId))
+        existing_friend = cursor.fetchone()
+        if existing_friend:
+            return jsonify({"status":"error", "message": "This person is already your friend."})
+
         #checking if the friend request already exists in the database
-        cursor.execute('SELECT * FROM FriendRequests WHERE userId=%s AND friendId=%s', (userId, friendId, ))
+        cursor.execute('SELECT * FROM FriendRequests WHERE userid=%s AND friendid=%s', (userId, friendId))
         existing_request = cursor.fetchone()
+
         if existing_request:
-            return jsonify ({"status":"error", "message": "There is an existing friend request"}), 500
+            return jsonify ({"status":"error", "message": "There is an existing friend request."}), 500
 
         #otherwise adding a row into the friendrequests table with the status 'pending'
         cursor.execute('INSERT INTO FriendRequests (userId, friendId, status) VALUES (%s, %s, %s)', (userId, friendId, 'pending'))
@@ -265,18 +272,40 @@ def update_profile():
     except Exception as e:
         return jsonify ({"status":"error", "message": str(e)}), 500
 
+@app.route('/api/get_profile', methods=['GET'])
+def get_profile():
+    try:
+        data = request.get_json()
+        user_id = data.get('user_id')
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute('''
+            SELECT username, bio, icon FROM Users WHERE id=%s
+        ''', (user_id))
+        profile = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        if profile:
+            return jsonify({'status':'success', 'username': profile[0], 'bio': profile[1], 'icon': profile[2]})
+        else:
+            return jsonify({'status': 'error', 'message': 'User does not exist'}), 404
+    
+    except Exception as e:
+        return jsonify ({"status":"error", "message": str(e)}), 500
+
 #------  UTILITY FUNCTIONS -------------------------------------------
 
-def sortSearchResultsByScore(results):
-    return recursiveSortSearchResultsByScore(results, 0 , len(results))
+def Merge(results):
+    return MergeSort(results, 0 , len(results))
 
-def recursiveSortSearchResultsByScore(results, start, end):
+def MergeSort(results, start, end):
     if end - start <= 1:
         return [results[start]]
 
     mid = (start + end) // 2
-    left = recursiveSortSearchResultsByScore(results, start, mid)
-    right = recursiveSortSearchResultsByScore(results, mid, end)
+    left = MergeSort(results, start, mid)
+    right = MergeSort(results, mid, end)
 
     merged = []
     i = 0

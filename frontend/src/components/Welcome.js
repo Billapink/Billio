@@ -1,16 +1,9 @@
-import React, { useEffect, useState } from 'react';
-
+import React from 'react';
 import {useNavigate} from 'react-router-dom';
-
-import NavBar from './NavBar';
 
 function Welcome() {
 
     const navigate = useNavigate();
-
-    const handleNavigation = (path) => {
-        navigate(path);
-    };
 
 
     return (
@@ -24,8 +17,12 @@ function Welcome() {
                 <div className="flex justify-center">
                 
                 </div>
-                <button className="p-3 px-20 bg-purple-500 text-white font-semibold rounded-full" type="button" onClick={()=> handleNavigation('/login')} >Log In</button>
-                <button className="p-3 px-20 bg-purple-500 text-white font-semibold rounded-full" type="button" onClick={()=> handleNavigation('/signup')} >Sign Up</button>
+                <button className="p-3 px-20 bg-purple-500 text-white font-semibold rounded-full" type="button" onClick={()=> navigate('/login')}>
+                    Log In
+                </button>
+                <button className="p-3 px-20 bg-purple-500 text-white font-semibold rounded-full" type="button" onClick={()=> navigate('/signup')}>
+                    Sign Up
+                </button>
                 
                 </div>
                 

@@ -1,32 +1,33 @@
-import React, { useEffect, useState } from 'react';
-
+import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 
 function SignUp() {
+    {/* Creating a state variable 'message' to display in the frontend when the JSON response has been returned to the frontend. 
+        With status either 'success' or 'error'. */}
     const [message, setMessage] = useState('');
-    
+
+    {/* Creating state variables for the new username and password they want to use for their account. Using the updating function 
+        to update thier values once input in the UI. */}
     const [newUsername,setNewUsername] = useState('');
     const [newPassword, setNewPassword] = useState('');
 
     const navigate = useNavigate();
-    
-    const handleNavigation = (path) => {
-        navigate(path);
-    };
 
-    {/* Creating the function to sign up by using the API QUERY 'api/sign_up' which will handle the logic
+    {/* Function to sign up by using the API QUERY 'api/sign_up' which will handle the logic
          of handling with the database then return appropriate responses given the conditions met. */}
-    
     const sign_up = (e) => {
         e.preventDefault();
 
         fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/sign_up', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            //Parsing in the new username and password variables to the body of the API to send to the backend.
             body: JSON.stringify({newUsername, newPassword}),
         })
             .then((response) => response.json())
 
+            //Dealing with response after the API query has been executed and parses back a message in JSON format 
+            //and setting that as the message to be displayed in the UI using the update function 'setMessage'.
             .then((data) => {
                     setMessage(data.message);    
             })
@@ -41,11 +42,15 @@ function SignUp() {
         </div>
         <div className="p-6 max-w-80 mx-auto col-auto bg-white rounded-xl shadow-md space-y-4 my-20">
             <h2 className="text-2xl font-bold text-gray-800 text-center">Sign Up</h2>
+            {/* Main div 'form' that contains the input boxes. Once pressed the 'submit' type button, it will send the values 
+            last stored in the input boxes to the 'sign_up' function and execute it. */}
             <form className='text-center' onSubmit={sign_up} >
                 <p className=' pd-4 text-gray-600 text-left pl-12' >Create a username: </p>
+                {/**/}
                 <input
                 className=' px-4 text-black bg-gray-100 h-10 rounded-full'
                 value={newUsername}
+                
                 onChange={(e)=> setNewUsername(e.target.value)}
                 />
                 <p className=' pt-4 text-gray-600 text-left pl-12'>Create a password: </p>
@@ -65,7 +70,7 @@ function SignUp() {
                 <p className='pd-3 text-black bg-white' >{message}</p>
             </div>
             <div className='flex place-content-left'>
-            <button className='m-2 bg-purple-600 rounded-full' onClick={() => (handleNavigation('/'))} >
+            <button className='m-2 bg-purple-600 rounded-full' onClick={() => (navigate('/'))} >
                 <img className='w-[35px]' src='/images/back-arrow.png' />
             </button>
             </div>

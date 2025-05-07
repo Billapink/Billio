@@ -47,9 +47,11 @@ function Home() {
         <div className='flex gap-x-3 py-3'>
             {
                 friends.map((friend) => (
-                    <div className="text-black"> 
-                        <img className="w-8 h-8" src={`/images/profile-icons/${friend.icon}.png`}/>
-                        {friend.name}
+                    <div className="text-black">
+                        <Link to={`/profile/${friend.id}`}>
+                            <img className="w-8 h-8" src={`/images/profile-icons/${friend.icon}.png`}/>
+                            {friend.name}
+                        </Link>
                     </div>
                 ))
             }
