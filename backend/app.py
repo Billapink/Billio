@@ -235,13 +235,13 @@ def search_users():
         cursor = conn.cursor()
 
         cursor.execute('''
-            SELECT id, username, similarity(username, %s) as score
+            SELECT id, username, icon, similarity(username, %s) as score
             FROM Users
             WHERE score > 0.5
         ''', (query, ))
-        results = [{'id': f[0], 'name': f[1], 'score': f[2]} for f in cursor.fetchall()]
+        results = [{'id': f[0], 'name': f[1], 'icon': f[2], 'score': f[3]} for f in cursor.fetchall()]
 
-        sortedResults = sortSearchResultsByScore(results)
+        sortedResults = merge(results)
 
         cursor.close()
         conn.close()
@@ -294,16 +294,16 @@ def get_profile():
 
 #------  UTILITY FUNCTIONS -------------------------------------------
 
-def Merge(results):
-    return MergeSort(results, 0 , len(results))
+def merge(results):
+    return merge_sort(results, 0 , len(results))
 
-def MergeSort(results, start, end):
+def merge_sort(results, start, end):
     if end - start <= 1:
         return [results[start]]
 
     mid = (start + end) // 2
-    left = MergeSort(results, start, mid)
-    right = MergeSort(results, mid, end)
+    left = merge_sort(results, start, mid)
+    right = merge_sort(results, mid, end)
 
     merged = []
     i = 0

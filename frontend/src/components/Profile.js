@@ -25,7 +25,7 @@ function Profile() {
                 setBio(data.bio);
                 setUser(data.username);
                 setIcon(data.icon);
-            })
+            });
     }, [])
 
     return (
