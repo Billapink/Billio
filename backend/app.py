@@ -3,6 +3,7 @@ from flask_cors import CORS
 import psycopg2
 from flask_socketio import SocketIO, emit
 import os
+import traceback
 
 
 app = Flask(__name__)
@@ -52,9 +53,9 @@ def sign_up():
         elif num_included == False:
             return jsonify({'status':'error', 'message':'Error! You must have at least 1 digit in your password.'})
         
-            
+        hashed_password = hash(new_password)
 
-        cursor.execute('INSERT INTO Users (Username, Password) VALUES (%s,%s)', (new_username, new_password))
+        cursor.execute('INSERT INTO Users (Username, Password) VALUES (%s,%s)', (new_username, hashed_password))
         conn.commit()
 
         cursor.close()
@@ -63,7 +64,7 @@ def sign_up():
         return jsonify({'status':'successful', 'message':'You have successfully created an account!'})
     
     except Exception as e:
-        return jsonify ({"status":"error", "message": str(e)}), 500
+        return jsonify ({"status":"error", "message": str(e), "stack": traceback.format_exc()}), 500
     
 #Log in database querying and logic
 @app.route('/api/log_in', methods=['GET', 'POST'])
@@ -83,7 +84,7 @@ def log_in():
         conn.close()
 
         if existing_user:
-            if password == existing_user[2]:
+            if hash(password) == existing_user[2]:
                 if existing_user[3] and existing_user[4]:
                     return jsonify({
                         'status':'success', 
@@ -124,23 +125,25 @@ def friend_request():
         cursor = conn.cursor()
         
         #checking if the friend_id is already a friend
-        cursor.execute('SELECT friendid FROM Friends WHERE userid = %s AND friend = %s', (userId, friendId))
+        cursor.execute('SELECT friendid FROM Friends WHERE userid = %s AND friendid = %s', (userId, friendId))
         existing_friend = cursor.fetchone()
         if existing_friend:
-            return jsonify({"status":"error", "message": "This person is already your friend."})
+            return jsonify({"status":"error", "message": "This person is already your friend.", "friendStat":"accepted"})
 
         #checking if the friend request already exists in the database
         cursor.execute('SELECT * FROM FriendRequests WHERE userid=%s AND friendid=%s', (userId, friendId))
         existing_request = cursor.fetchone()
 
         if existing_request:
-            return jsonify ({"status":"error", "message": "There is an existing friend request."}), 500
+            return jsonify ({"status":"error", "message": "There is an existing friend request.", "friendStat":"pending"}), 500
 
         #otherwise adding a row into the friendrequests table with the status 'pending'
         cursor.execute('INSERT INTO FriendRequests (userId, friendId, status) VALUES (%s, %s, %s)', (userId, friendId, 'pending'))
         conn.commit()
         cursor.close()
         conn.close()
+        return jsonify ({"status":"success", "message": "You have successfully added a friend!", "friendStat":"pending"})
+    
     except Exception as e:
         return jsonify ({"status":"error", "message": str(e)}), 500
 
@@ -237,8 +240,8 @@ def search_users():
         cursor.execute('''
             SELECT id, username, icon, similarity(username, %s)
             FROM Users
-            WHERE similarity(username, %s) > 0.5
-        ''', (query, ))
+            WHERE similarity(username, %s) > 0.0
+        ''', (query, query))
         results = [{'id': f[0], 'name': f[1], 'icon': f[2], 'score': f[3]} for f in cursor.fetchall()]
 
         sortedResults = merge(results)
@@ -248,7 +251,7 @@ def search_users():
 
         return jsonify({'status':'success', 'data': sortedResults})
     except Exception as e:
-        return jsonify ({"status":"error", "message": str(e)}), 500
+        return jsonify ({"status":"error", "message": str(e), "stack": traceback.format_exc()}), 500
 
 @app.route('/api/update_profile', methods=['POST'])
 def update_profile():
@@ -294,7 +297,20 @@ def get_profile():
 
 #------  UTILITY FUNCTIONS -------------------------------------------
 
+def hash(password):
+	
+    hash_value= 0
+	
+    for i in range(len(password)):
+        hash_value += (i+1)*ord(password[i])
+			
+    hash_value += 60
+	
+    return str(hash_value % 997)
+
 def merge(results):
+    if len(results) == 0:
+        return []
     return merge_sort(results, 0 , len(results))
 
 def merge_sort(results, start, end):
@@ -309,7 +325,7 @@ def merge_sort(results, start, end):
     i = 0
     j = 0
     while i < len(left) and j < len(right):
-        if left[i].score > right[j].score:
+        if left[i]['score'] > right[j]['score']:
             merged.append(left[i])
             i += 1
         else:

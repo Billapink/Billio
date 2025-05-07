@@ -38,7 +38,6 @@ function Home() {
             .then((response) => response.json())
 
             .then((data) => {
-                console.log('data', data);
                 setSearchResults(data.data);
             });
     };
@@ -51,13 +50,27 @@ function Home() {
         <div className=' pt-[100px] flex justify-center'>
             <div className=' text-black font-bold text-3xl' >Home</div>
         </div>
-        <div className=' pt-[100px] flex justify-center'>
+        <div className=' pt-[100px] gap-2 flex justify-center'>
             <input
                 className='px-4 text-black bg-gray-100 h-10 rounded-full' 
                 value={searchQuery} 
+                placeholder='Search username'
                 onChange={(e) => setSearchQuery(e.target.value)}/>
             <button className='px-4 text-black bg-gray-100 h-10 rounded-full' onClick={handleSearch}>Search</button>
         </div>
+        {searchResult && (<div className=' pt-[100px] flex flex-col justify-center gap-2'>
+            <div className='text-black font-bold text-xl' >Search Results</div>
+            {
+                searchResult.map((user) => (
+                    <div>
+                        <Link to={`/profile/${user.id}`} className="text-black flex flex-row justify-between w-1/2">
+                            <img className="w-8 h-8" src={`/images/profile-icons/${user.icon}.png`}/>
+                            {user.name}
+                        </Link> 
+                    </div>
+                ))
+            }
+        </div>)}
         <div className=' pt-[50px] flex justify-between'>
             <div className='flex  text-black font-bold text-2xl'>Friends</div>
             <button onClick={()=>(navigate('/Requests'))}>

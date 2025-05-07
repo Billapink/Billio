@@ -10,6 +10,7 @@ function SignUp() {
         to update thier values once input in the UI. */}
     const [newUsername,setNewUsername] = useState('');
     const [newPassword, setNewPassword] = useState('');
+    const [verifyPassword, setVerifyPassword] = useState('');
 
     const navigate = useNavigate();
 
@@ -18,12 +19,14 @@ function SignUp() {
     const sign_up = (e) => {
         e.preventDefault();
 
-        fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/sign_up', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            //Parsing in the new username and password variables to the body of the API to send to the backend.
-            body: JSON.stringify({newUsername, newPassword}),
-        })
+        if (verifyPassword == newPassword){
+
+            fetch('https://billio-backend-376ef0cff770.herokuapp.com/api/sign_up', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                //Parsing in the new username and password variables to the body of the API to send to the backend.
+                body: JSON.stringify({newUsername, newPassword}),
+            })
             .then((response) => response.json())
 
             //Dealing with response after the API query has been executed and parses back a message in JSON format 
@@ -31,7 +34,8 @@ function SignUp() {
             .then((data) => {
                     setMessage(data.message);    
             })
-        }
+        } else {setMessage("Your passwords do not match.")}
+    }
     
 
 
@@ -59,6 +63,13 @@ function SignUp() {
                 className='px-4 text-black bg-gray-100 w-md h-10 rounded-full'
                 value={newPassword}
                 onChange={(e)=> setNewPassword(e.target.value)}
+                />
+                <p className=' pt-4 text-gray-600 text-left pl-12'>Verify password: </p>
+                <input
+                type='password'
+                className=' px-4 text-black bg-gray-100 w-md h-10 rounded-full'
+                value={verifyPassword}
+                onChange={(e)=> setVerifyPassword(e.target.value)}
                 />
                 <div>
                 <button 
