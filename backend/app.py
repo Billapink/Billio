@@ -230,8 +230,7 @@ def get_friends():
 @app.route('/api/search_users', methods=['GET'])
 def search_users():
     try:
-        data = request.get_json()
-        query = data.get('query')
+        query = request.args.get('query')
         conn = get_db_connection()
         cursor = conn.cursor()
 
@@ -281,7 +280,7 @@ def get_profile():
 
         cursor.execute('''
             SELECT username, bio, icon FROM Users WHERE id=%s
-        ''', (user_id))
+        ''', (user_id, ))
         profile = cursor.fetchone()
         cursor.close()
         conn.close()
@@ -291,7 +290,7 @@ def get_profile():
             return jsonify({'status': 'error', 'message': 'User does not exist'}), 404
     
     except Exception as e:
-        return jsonify ({"status": "a error", "message": str(e)}), 500
+        return jsonify ({"status": "error", "message": str(e)}), 500
 
 #------  UTILITY FUNCTIONS -------------------------------------------
 
