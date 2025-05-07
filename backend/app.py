@@ -275,8 +275,7 @@ def update_profile():
 @app.route('/api/get_profile', methods=['GET'])
 def get_profile():
     try:
-        data = request.get_json()
-        user_id = data.get('user_id')
+        user_id = request.args.get('user_id')
         conn = get_db_connection()
         cursor = conn.cursor()
 
@@ -292,7 +291,7 @@ def get_profile():
             return jsonify({'status': 'error', 'message': 'User does not exist'}), 404
     
     except Exception as e:
-        return jsonify ({"status":"error", "message": str(e)}), 500
+        return jsonify ({"status": "a error", "message": str(e)}), 500
 
 #------  UTILITY FUNCTIONS -------------------------------------------
 
