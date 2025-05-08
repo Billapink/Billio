@@ -4,7 +4,7 @@ import NavBar from './NavBar';
 import Header from './Header';
 import { UserContext } from './UserContext';
 
-// Connect to the Flask-SocketIO server
+// Connecting to the Flask-SocketIO server using the URL of the backend
 const socket = io('https://billio-backend-376ef0cff770.herokuapp.com', {
     transports: ['websocket'],
   });
