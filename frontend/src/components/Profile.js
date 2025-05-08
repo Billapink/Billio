@@ -8,6 +8,7 @@ import { UserContext } from './UserContext';
 function Profile() {
     const { id } = useParams();
     const userData = useContext(UserContext);
+    const [userId, setUserId] = useState(null);
 
     const [message, setMessage] = useState();
 
@@ -28,6 +29,7 @@ function Profile() {
 
     useEffect(() => {
         const user_id = id || userData.userId;
+        setUserId(user_id);
 
         fetch(`https://billio-backend-376ef0cff770.herokuapp.com/api/get_profile?user_id=${user_id}`, {
             method: 'GET',
@@ -71,7 +73,7 @@ function Profile() {
             <div className='text-black gap-4 flex flex-col'>
             <div className='flex gap-4'>
             <div className='text-black font-bold text-3xl flex justify-center' >Profile</div>
-            { userData.userId && (<button 
+            { userId === userData.userId && (<button 
             className='w-[100px] text-white font-bold text-sm bg-purple-600 mx-auto rounded-full p-2'
             onClick={log_out}
             >Log Out</button>) }
