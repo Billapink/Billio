@@ -34,9 +34,11 @@ function Chat() {
 
     const sendMessage = () => {
         if (newMessage.trim()) {
-            const messageData = { sender: userData.username, content: newMessage }; // Example sender
-            socket.emit('send_message', messageData); // Send the message to the server
-            setNewMessage(''); // Clear the input field
+            const messageData = { sender: userData.username, content: newMessage }; // Formatting the display of the message 
+            // on the UI for sender
+
+            socket.emit('send_message', messageData); // Send message to server
+            setNewMessage(''); 
         }
     };
 
