@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { io } from 'socket.io-client';
 import NavBar from './NavBar';
 import Header from './Header';
+import { UserContext } from './UserContext';
 
 // Connect to the Flask-SocketIO server
 const socket = io('https://billio-backend-376ef0cff770.herokuapp.com', {
@@ -11,6 +12,8 @@ const socket = io('https://billio-backend-376ef0cff770.herokuapp.com', {
 function Chat() {
     const [messages, setMessages] = useState([]); // List of messages
     const [newMessage, setNewMessage] = useState(''); // Message input
+
+    const userData = useContext(UserContext);
 
     useEffect(() => {
         // Listen for the connection response from the server
@@ -31,7 +34,7 @@ function Chat() {
 
     const sendMessage = () => {
         if (newMessage.trim()) {
-            const messageData = { sender: 'User1', content: newMessage }; // Example sender
+            const messageData = { sender: userData.username, content: newMessage }; // Example sender
             socket.emit('send_message', messageData); // Send the message to the server
             setNewMessage(''); // Clear the input field
         }
