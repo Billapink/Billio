@@ -67,13 +67,15 @@ def sign_up():
         return jsonify ({"status":"error", "message": str(e), "stack": traceback.format_exc()}), 500
     
 #Log in database querying and logic
-@app.route('/api/log_in', methods=['GET', 'POST'])
+@app.route('/api/log_in', methods=['POST'])
 def log_in():
     try:
+        #retreiving the data from the body of the API call from the frontend
         data = request.get_json()
         username = data.get('username')
         password = data.get('password')
 
+        #connecting to the database using the get_db_connection subroutine defined manually
         conn = get_db_connection()
         cursor = conn.cursor()
 
