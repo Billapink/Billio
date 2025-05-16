@@ -5,7 +5,6 @@ from flask_socketio import SocketIO, emit
 import os
 import traceback
 
-
 app = Flask(__name__)
 CORS(app, origins=["https://www.billio.co.uk", "http://localhost:3000"])
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", "default-secret-key")
@@ -18,9 +17,11 @@ def get_db_connection():
     db_url = os.getenv("DATABASE_URL", "postgres://u7fknjpb0a89q7:pcf1ddf627519015bea51df1410d2e8e55dda78118a04a90c5feedb0f0ebd96f7@ce0lkuo944ch99.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d5nrok0ifieaq7")
     
     try:
-        # Making the connection via whole url
+        # Making the connection via whole url to connect to the database via the 'psycopg2' library.
         conn = psycopg2.connect(db_url, sslmode="require")
         return conn
+    
+    #If an error occurs, send error message with details to debug
     except Exception as e:
         print(f"Error connecting to the database: {e}")
         raise
@@ -28,41 +29,59 @@ def get_db_connection():
 #------  MANAGING DATABASE QUERIES -------------------------------------------
 
 #Sign up database querying and logic
-@app.route('/api/sign_up', methods=['GET', 'POST'])
+@app.route('/api/sign_up', methods=['POST'])
 def sign_up():
     try:
+        #collecting the data that was sent to the POST method API call in the 'body' of the 'fetch' command
+        #setting those data to their respective variables to check with the database for further validation
         data = request.get_json()
         new_username = data.get('newUsername')
         new_password = data.get('newPassword')
 
+        #connecting to the database via another self-created subroutine (explained later)
+        # and creating a 'cursor' object that connects to the database to enable SQL query execution
         conn = get_db_connection()
         cursor = conn.cursor()
 
+        #reading the database to check if a record exists with the username they entered 
+        # and if one does, the value of 'existing_user' will be True
         cursor.execute('SELECT * FROM Users WHERE Username = %s', (new_username,))
         existing_user = cursor.fetchone()
         
+        #logic to set the 'num_included' to True if found a number in the password they entered
+        # using a for loop and string iteration
         num_included = False
         for letter in new_password:
             if letter in '0123456789':
                 num_included = True
 
+        # Using the previously defined variables to send corresponding error messages back to the user if 
+        # conditions not met.
+        # Sending an error if a user already exists with that username.
         if existing_user:
             return jsonify({'status':'error', 'message':'Error! This username already in use, please choose another one. '})
+        # Sending an error if password doesn't have a length of at least seven characters.
         elif len(new_password) < 7:
             return jsonify({'status':'error', 'message':'Error! Password must be at least 7 characters.'})
+        # Sending an error if password doesn't include at least one digit.
         elif num_included == False:
             return jsonify({'status':'error', 'message':'Error! You must have at least 1 digit in your password.'})
         
+        #If all conditions met, password hashed (using custom hash function) before sending to database to be stored.
         hashed_password = hash(new_password)
 
+        #Storing the username and hashed password in the database
         cursor.execute('INSERT INTO Users (Username, Password) VALUES (%s,%s)', (new_username, hashed_password))
         conn.commit()
 
         cursor.close()
         conn.close()
 
+        #Since will only reach this point when username and password valid and stored, send 'success' message back to frontend
+        # which can then be displayed in the UI 
         return jsonify({'status':'successful', 'message':'You have successfully created an account!'})
     
+    #If any logic fails that falls outside the conditions stated above, send back an error with the details sent to frontend
     except Exception as e:
         return jsonify ({"status":"error", "message": str(e), "stack": traceback.format_exc()}), 500
     
@@ -79,12 +98,15 @@ def log_in():
         conn = get_db_connection()
         cursor = conn.cursor()
 
+        #reading the password (which will be hashed) from the database where the username is the same as the one input in the frontend
         cursor.execute('SELECT * FROM Users WHERE Username = %s', (username,))
+        #if a user exists that has a username that they typed in the frontend, existing_user will be 'True'
         existing_user = cursor.fetchone()
 
         cursor.close()
         conn.close()
 
+        #If the user does exist, match the password field to the password they input (hashed).
         if existing_user:
             if hash(password) == existing_user[2]:
                 if existing_user[3] and existing_user[4]:
@@ -106,8 +128,10 @@ def log_in():
                         'profile_complete':'false'
                     })
         
+        #If the conditions fail, send error message and prompt them to type it in again.
         return jsonify({'status':'error', 'message':'Incorrect username or password, please try again.'})
     
+    #Any other error will be thrown to the frontend if comes up.
     except Exception as e:
         return jsonify({'status':'error', 'message': str(e)}), 500
 
@@ -357,19 +381,29 @@ def findUser(conn, userId):
 
 #------  MANAGING MESSAGE BROADCASTING -------------------------------------------
 
-# Event when a client connects
+# Defining the socketio events (a bit like defining APIs in Flask) to handle specific 
+# events depending on the status of connection to the chat
 
+#Here I am defining the event of connecting intially to the chat. 
+# It will have assigned an id to the client connected and I am printing it here. 
+# I am also sending a 'welcome' message to the client once they have connected via 
+# the 'emit' command which sends a message to the connected client.
 @socketio.on('connect')
 def handle_connect():
     print(f"User: {request.sid} connected.")
-    emit('connection_response', {'message': f'Welcome to the chat {request.sid}!'})  # Send a welcome message to the client
+    emit('connection_response', {'message': f'Welcome to the chat {request.sid}!'})
 
-# Event when a message is received from the client
+#This is an event that handles the sending of the message once the user has connected to the chat.
+#It takes in the data parsed in as 'data' that will be input in the frontend and sent to the backend 
+# via an emit function in React. 'Broadcast = True' here also makes the message sent appear to all clients 
+# connected so everybody logged on can see the chat.
 @socketio.on('send_message')
 def handle_send_message(data):
     print(f"Message received: {data}")
-    emit('receive_message', data, broadcast=True)  # Broadcast the message to all connected clients
+    emit('receive_message', data, broadcast=True)  
 
+#This event handles the disconnect of the chat and just needs to be called 'disconnect' and their bidirectional
+# connection is disconnected. And to keep track of who is still there or not, I am printing their disconnected status.
 @socketio.on('disconnect')
 def handle_disconnect():
     print(f"User disconnected: {request.sid}")
